@@ -318,7 +318,7 @@ table.bell input{width:6.5em}
     <section class="col">
       <div class="card" style="flex:1">
         <div class="head">
-          <h2>시간표 <span class="tag tonly">과목을 누르면 오늘만 바꿀 수 있어요</span></h2>
+          <h2>시간표 <span class="timechip" id="ttSrc">기초 시간표</span> <span class="tag tonly">과목을 누르면 오늘만 바꿀 수 있어요</span></h2>
           <div class="daynav"><button id="dPrev" aria-label="이전 날">‹</button><span class="lbl" id="dLbl"></span><button id="dNext" aria-label="다음 날">›</button><button id="dToday">오늘</button></div>
         </div>
         <div id="sampleWarn" class="sample" hidden>예시 시간표예요. 설정 › 주간 시간표에서 우리 반 시간표로 바꿔 주세요.</div>
@@ -423,14 +423,28 @@ const DEFAULTS = {
   morning:{start:"08:30",end:"08:50"},
   bell:[{start:"08:50",end:"09:30"},{start:"09:40",end:"10:20"},{start:"10:30",end:"11:10"},{start:"11:20",end:"12:00"},{start:"12:10",end:"12:50"},{start:"13:30",end:"14:10"},{start:"14:20",end:"15:00"}],
   ppd:{"1":6,"2":6,"3":5,"4":6,"5":6},
+  /* 6학년 기초시간표 6-6 (공유 시트 기준) */
   tt:{
-    "1":[P("국어"),P("수학"),P("사회"),P("과학",1,"과학실"),P("체육",1,"강당"),P("미술")],
-    "2":[P("수학"),P("국어"),P("영어",1,"영어실"),P("실과"),P("음악"),P("창체")],
-    "3":[P("국어"),P("수학"),P("과학",1,"과학실"),P("사회"),P("체육",1,"운동장")],
-    "4":[P("영어",1,"영어실"),P("국어"),P("수학"),P("사회"),P("음악"),P("미술")],
-    "5":[P("국어"),P("수학"),P("체육",1,"강당"),P("과학",1,"과학실"),P("실과"),P("창체")]
+    "1":[P("미술"),P("미술"),P("수학"),P("수학"),P("국어"),P("사회")],
+    "2":[P("수학"),P("과학",1,"과학실"),P("도덕"),P("체육(다)",1,"다목적실"),P("국어"),P("음악")],
+    "3":[P("수학"),P("과학",1,"과학실"),P("영어",1,"영어실"),P("실과"),P("국어")],
+    "4":[P("영어",1,"영어실"),P("과학",1,"과학실"),P("체육",1,"강당"),P("실과"),P("국어"),P("음악")],
+    "5":[P("사회"),P("창체"),P("창체"),P("영어",1,"영어실"),P("국어"),P("체육",1,"강당")]
   },
-  ttSample:true,
+  ttSample:false,
+  /* 주별 시간표: 공유 시트의 주별 시수표 + 기초시간표로 완성 (키 = 그 주 월요일) */
+  weeks:{
+    "2026-09-28":{label:"9월 26주",
+      "1":[P("미술"),P("과학",1,"과학실"),P("수학"),P("사회"),P("국어"),P("사회")],
+      "2":[P("수학"),P("창체(졸업사진)"),P("도덕"),P("체육(다)",1,"다목적실"),P("국어"),P("음악")],
+      "3":[P("연극(국)"),P("연극(국)"),P("영어",1,"영어실"),P("실과"),P("국어")],
+      "4":[P("수학"),P("영어(원)",1,"영어실"),P("체육",1,"강당"),P("실과"),P("국어"),P("과학",1,"과학실")],
+      "5":[P("국악(음)"),P("과학",1,"과학실"),P("사회"),P("영어",1,"영어실"),P("국어"),P("체육",1,"강당")]},
+    "2026-10-05":{label:"10월 27주",
+      "2":[P("수학"),P("사회"),P("미술"),P("미술"),P("국어"),P("음악")],
+      "3":[P("연극(국)"),P("연극(국)"),P("수학"),P("체육(늘봄5)",1,"강당"),P("국어")],
+      "4":[P("영어(원)",1,"영어실"),P("사회"),P("체육",1,"강당"),P("실과"),P("실과"),P("창체")]}
+  },
   rot:{date:"2026-10-01",no:1},
   holidays:"2026-10-05\n2026-10-09",
   roleA:"학습 도우미", roleB:"교실 지킴이",
@@ -494,11 +508,14 @@ function angelsFor(d){
 }
 
 /* ---------- 오늘의 교시 ---------- */
+function mondayKey(d){ const x=new Date(d); x.setDate(x.getDate()-((x.getDay()+6)%7)); return ymd(x); }
+function weekOf(d){ const wk=S.weeks&&S.weeks[mondayKey(d)]; return wk||null; }
 function periodsFor(d){
-  const w=String(d.getDay()); if(!S.tt[w]) return [];
-  const n=+S.ppd[w]||0; const out=[];
+  const w=String(d.getDay()); const wk=weekOf(d);
+  const list=(wk&&wk[w])?wk[w]:S.tt[w]; if(!list) return [];
+  const n=(wk&&wk[w])?Object.keys(wk[w]).length:(+S.ppd[w]||0); const out=[];
   for(let i=0;i<n;i++){
-    const base=S.tt[w][i]||P(""); const ov=(D.ov&&D.ov[i+1])||null; const src=ov||base;
+    const base=list[i]||P(""); const ov=(D.ov&&D.ov[i+1])||null; const src=ov||base;
     const b=S.bell[i]||{start:"00:00",end:"00:00"};
     out.push({n:i+1,s:src.s||"",m:!!src.m,loc:src.loc||"",changed:!!ov,start:b.start,end:b.end,sup:(D.sup&&D.sup[i+1])||""});
   }
@@ -671,6 +688,7 @@ function renderTT(force){
   const isToday = viewKey===ymd(new Date());
   $("dLbl").textContent=(isToday?"오늘 · ":"")+korDate(vd);
   $("sampleWarn").hidden=!S.ttSample;
+  const wk=weekOf(vd); $("ttSrc").textContent=wk?(wk.label||"주간")+" 시간표":"기초 시간표";
   box.innerHTML="";
   if(!isSchoolDay(vd)){
     const off=document.createElement("div"); off.className="offday";
