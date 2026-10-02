@@ -302,6 +302,7 @@ table.bell input{width:6.5em}
 .student .sup input{border-bottom-color:transparent}
 .student .sup.empty{display:none}
 .student .pad{cursor:default}
+@media (max-width:1100px){.top{grid-template-columns:1fr auto}.status{grid-column:1/-1;order:3}.status .now{font-size:1.5em}}
 @media (max-width:700px){.top{grid-template-columns:1fr;text-align:center}.brand,.clockwrap{justify-content:center}.datebox{text-align:center}}
 </style>
 
@@ -329,7 +330,7 @@ table.bell input{width:6.5em}
       <div class="card" style="flex:1">
         <div class="head">
           <h2>시간표 <span class="timechip" id="ttSrc">기초 시간표</span> <span class="tag tonly">과목을 누르면 오늘만 바꿀 수 있어요</span></h2>
-          <div class="daynav"><button id="dPrev" aria-label="이전 날">‹</button><span class="lbl" id="dLbl"></span><button id="dNext" aria-label="다음 날">›</button><button id="dToday">오늘</button></div>
+          <div class="daynav"><button id="dSheet" class="tonly" title="6학년 공유 시트에서 이 주 시간표 불러오기">시트에서 불러오기</button><button id="dPrev" aria-label="이전 날">‹</button><span class="lbl" id="dLbl"></span><button id="dNext" aria-label="다음 날">›</button><button id="dToday">오늘</button></div>
         </div>
         <div id="sampleWarn" class="sample" hidden>예시 시간표예요. 설정 › 주간 시간표에서 우리 반 시간표로 바꿔 주세요.</div>
         <div class="tt" id="tt"></div>
@@ -388,7 +389,7 @@ table.bell input{width:6.5em}
         <button id="shThis">이번 주 불러오기</button>
         <button id="shNext">다음 주 불러오기</button>
       </div>
-      <p class="note" id="shNote" style="margin:4px 0 0">시트의 주별 시수표와 기초시간표를 보고 빈칸을 채워 완성해요. 저장하기 전에 미리 보여 드려요.</p>
+      <p class="note" id="shNote" style="margin:4px 0 0">누르면 그 주 시트의 시수와 기초시간표를 보고 빈칸을 채워 바로 적용해요. 공유 시트의 우리 반 빈칸도 이어서 채울 수 있어요(다른 반·이미 적힌 칸은 그대로).</p>
       <div id="shOut"></div>
     </div>
     <div class="card">
@@ -957,7 +958,7 @@ function openSettings(){
     const x=el("button",{class:"btn x"},"닫기"); x.addEventListener("click",close); sh.appendChild(x);
     sh.appendChild(el("h3",null,"설정"));
     const tabs=el("div",{class:"tabs",role:"tablist"}); const body=el("div"); sh.append(tabs,body);
-    const names=[["basic","우리 반"],["bell","시정표"],["week","주간 시간표"],["angel","수호천사"],["alarm","알림"]];
+    const names=[["basic","우리 반"],["bell","시정표"],["week","시간표"],["angel","수호천사"],["alarm","알림"]];
     let cur="basic";
     names.forEach(([k,t])=>{ const b=el("button",{role:"tab"},t); b.dataset.k=k; b.addEventListener("click",()=>{ collect(); cur=k; draw(); }); tabs.appendChild(b); });
     function fld(label,input,hint){ const f=el("label",{class:"fld"}); f.appendChild(el("span",null,label)); f.appendChild(input); if(hint) f.appendChild(el("small",null,hint)); return f; }
@@ -980,6 +981,13 @@ function openSettings(){
         body.appendChild(el("p",{class:"note"},"앞 교시와 30분 이상 떨어지면 점심시간으로 표시돼요. 7교시는 교시 수를 7로 바꿀 때만 쓰여요."));
       }
       if(cur==="week"){
+        const sec=el("div",{class:"card",style:"margin-bottom:14px;background:var(--bg)"});
+        sec.appendChild(el("div",{style:"font-weight:700;margin-bottom:6px"},"주간 시간표는 6학년 공유 시트에서 불러와요"));
+        const q=el("div",{class:"quick"}); const b1=el("button",null,"이번 주 불러오기"), b2=el("button",null,"다음 주 불러오기"); q.append(b1,b2); sec.appendChild(q);
+        const sn=el("p",{class:"note",style:"margin:4px 0 0"},"그 주 시트의 시수와 기초시간표를 보고 빈칸을 채워 바로 적용해요. 직접 입력하지 않아도 돼요.");
+        const so=el("div"); sec.append(sn,so); body.appendChild(sec);
+        b1.addEventListener("click",()=>loadSheetWeek(weekMon(0),so,sn)); b2.addEventListener("click",()=>loadSheetWeek(weekMon(1),so,sn));
+        body.appendChild(el("div",{style:"font-weight:700;margin:6px 0"},"기초 시간표 (시트를 못 불러온 주에 쓰여요)"));
         const ppd=el("div",{class:"grid2",style:"grid-template-columns:repeat(5,minmax(80px,1fr))"});
         ["1","2","3","4","5"].forEach(w=>{ const s=el("select",{id:"ppd"+w}); for(let n=3;n<=7;n++){ const o=el("option",{value:n},n+"교시"); if(+T.ppd[w]===n) o.selected=true; s.appendChild(o);} s.addEventListener("change",()=>{ collect(); draw(); }); ppd.appendChild(fld(WD[+w]+"요일",s)); });
         body.appendChild(ppd);
@@ -1041,7 +1049,7 @@ function openSettings(){
     const foot=el("div",{class:"foot"});
     foot.appendChild(el("span",{class:"note",style:"margin:0"},"저장하면 이 화면을 연 모든 기기에 바로 반영돼요."));
     const save=el("button",{class:"btn pri"},"저장하고 닫기");
-    save.addEventListener("click",async()=>{ collect(); if(T._pin){ T.pinHash=await sha(T._pin); lsSet("hd-pin-ok",T.pinHash); } delete T._pin; S=T; saveSettings(); renderAll(); close(); toast("저장했어요"); });
+    save.addEventListener("click",async()=>{ collect(); if(T._pin){ T.pinHash=await sha(T._pin); lsSet("hd-pin-ok",T.pinHash); } delete T._pin; T.weeks=S.weeks; S=T; saveSettings(); renderAll(); close(); toast("저장했어요"); });
     foot.appendChild(save); sh.appendChild(foot);
   });
 }
@@ -1087,6 +1095,7 @@ $("tBig").addEventListener("click",()=>openBig());
 /* ---------- 기타 이벤트 ---------- */
 $("morning").addEventListener("input",e=>{ D.morning=e.target.value; saveDay(); });
 $("notice").addEventListener("input",e=>{ D.notice=e.target.value; saveDay(); });
+$("dSheet").addEventListener("click",openSheetLoad);
 $("dPrev").addEventListener("click",()=>setView(addDays(viewDate(),-1)));
 $("dNext").addEventListener("click",()=>setView(addDays(viewDate(),1)));
 $("dToday").addEventListener("click",()=>setView(new Date()));
@@ -1277,22 +1286,23 @@ function subjOf(name){
   return "창체";
 }
 function shortName(name){ const t=(name||"").trim(); if(/^창체\(자율/.test(t.replace(/\s/g,""))) return "창체"; return t; }
-let sheetToken=null, sheetTokenAt=0;
-async function getSheetToken(){
-  if(sheetToken && Date.now()-sheetTokenAt<50*60000) return sheetToken;
+const SHEET_TOK={};
+async function getSheetToken(write){
+  const key=write?"w":"r"; const have=SHEET_TOK.w||SHEET_TOK[key];
+  if(have && Date.now()-have.at<50*60000) return have.tok;
   if(!window.firebase || !firebase.auth || !firebase.auth().currentUser) throw new Error("학급 서버 버전의 교사 화면에서 로그인한 뒤에 쓸 수 있어요.");
-  const p=new firebase.auth.GoogleAuthProvider(); p.addScope("https://www.googleapis.com/auth/spreadsheets.readonly");
+  const p=new firebase.auth.GoogleAuthProvider(); p.addScope(write?"https://www.googleapis.com/auth/spreadsheets":"https://www.googleapis.com/auth/spreadsheets.readonly");
   p.setCustomParameters({login_hint:firebase.auth().currentUser.email||""});
   const r=await firebase.auth().currentUser.reauthenticateWithPopup(p);
-  sheetToken=r.credential&&r.credential.accessToken; sheetTokenAt=Date.now();
-  if(!sheetToken) throw new Error("시트 읽기 권한을 받지 못했어요.");
-  return sheetToken;
+  const tok=r.credential&&r.credential.accessToken;
+  if(!tok) throw new Error(write?"시트 편집 권한을 받지 못했어요.":"시트 읽기 권한을 받지 못했어요.");
+  SHEET_TOK[key]={tok:tok,at:Date.now()}; return tok;
 }
-async function sheetGet(path){
-  const tok=await getSheetToken();
-  const r=await fetch("https://sheets.googleapis.com/v4/spreadsheets/"+S.sheetId+path,{headers:{Authorization:"Bearer "+tok}});
+async function sheetGet(path,opt){
+  opt=opt||{}; const tok=await getSheetToken(!!opt.write);
+  const r=await fetch("https://sheets.googleapis.com/v4/spreadsheets/"+S.sheetId+path,{method:opt.body?"POST":"GET",headers:Object.assign({Authorization:"Bearer "+tok},opt.body?{"Content-Type":"application/json"}:{}),body:opt.body?JSON.stringify(opt.body):undefined});
   const j=await r.json().catch(()=>({}));
-  if(!r.ok){ const m=(j.error&&j.error.message)||r.status; if(r.status===403 && /has not been used|disabled/i.test(m)) throw new Error("Google Sheets API가 아직 꺼져 있어요. 클라우드 콘솔에서 '사용'을 눌러 주세요."); if(r.status===403||r.status===404) throw new Error("이 구글 계정으로 시트를 열 수 없어요. 공유 시트를 이 계정으로 볼 수 있는지 확인해 주세요."); throw new Error("시트를 읽지 못했어요: "+m); }
+  if(!r.ok){ const m=(j.error&&j.error.message)||r.status; if(r.status===403 && /has not been used|disabled/i.test(m)) throw new Error("Google Sheets API가 아직 꺼져 있어요. 클라우드 콘솔에서 '사용'을 눌러 주세요."); if(r.status===403||r.status===404) throw new Error(opt.write?"이 구글 계정으로 시트를 고칠 수 없어요. 공유 시트의 편집 권한을 확인해 주세요.":"이 구글 계정으로 시트를 열 수 없어요. 공유 시트를 이 계정으로 볼 수 있는지 확인해 주세요."); throw new Error("시트를 읽지 못했어요: "+m); }
   return j;
 }
 const vals=(rng)=>sheetGet("/values/"+encodeURIComponent(rng)+"?valueRenderOption=FORMATTED_VALUE").then(j=>j.values||[]);
@@ -1306,9 +1316,9 @@ function findClassTable(rows,code){
   for(let r=0;r<rows.length;r++) for(let c=0;c<(rows[r]||[]).length;c++){
     if(g(r,c)!==code) continue;
     for(let h=r+1;h<=r+3;h++){ for(let cc=Math.max(0,c-6);cc<c+8;cc++){ if(g(h,cc).startsWith("월") && g(h,cc+1).startsWith("화")){
-      const lab=cc-1, out={}; for(let d=0;d<5;d++) out[d+1]=[];
+      const lab=cc-1, out={pos:{}}; for(let d=0;d<5;d++){ out[d+1]=[]; out.pos[d+1]=[]; }
       for(let pr=h+1;pr<h+10;pr++){ const m=g(pr,lab).match(/^(\d)교시/); if(!m) continue; const p=+m[1];
-        for(let d=0;d<5;d++) out[d+1][p-1]=g(pr,cc+d); }
+        for(let d=0;d<5;d++){ out[d+1][p-1]=g(pr,cc+d); out.pos[d+1][p-1]={r:pr,c:cc+d}; } }
       return out; } } }
   }
   return null;
@@ -1357,16 +1367,14 @@ function completeWeek(week,base,hours,monday){
   const fin={}; days.forEach(d=>grid[d].forEach(x=>{ const k=subjOf(x); if(k) fin[k]=(fin[k]||0)+1; }));
   return {out,fixed,changed,fin,left:need};
 }
-let shPending=null;
-async function loadSheetWeek(offset){
-  const out=$("shOut"); out.innerHTML=""; const note=$("shNote");
-  const mon=parseYmd(mondayKey(addDays(new Date(),offset*7)));
-  note.textContent="시트를 읽는 중이에요…";
+/* 불러오면 시수에 맞춰 완성한 시간표를 바로 적용해요(되돌리기 가능) */
+async function loadSheetWeek(mon,out,note){
+  out.innerHTML=""; note.textContent="공유 시트를 읽는 중이에요…";
   try{
     const meta=await sheetGet("?fields=sheets.properties.title");
     const titles=(meta.sheets||[]).map(x=>x.properties.title);
     const tab=findWeekTab(titles,mon);
-    if(!tab) throw new Error(korDate(mon)+"이 들어 있는 주 시트를 찾지 못했어요. 시트 이름에 (10.5~10.9)처럼 날짜가 있어야 해요.");
+    if(!tab) throw new Error(korDate(mon)+"이 들어 있는 주 시트가 아직 없어요. 시트 이름에 (10.5~10.9)처럼 날짜가 있어야 해요.");
     const baseTab=titles.find(t=>/기초\s*시간표/.test(t));
     const [wr,br]=await Promise.all([vals("'"+tab+"'!A1:Z60"), baseTab?vals("'"+baseTab+"'!A1:Z60"):Promise.resolve([])]);
     const week=findClassTable(wr,S.classCode), base=findClassTable(br,S.classCode), hours=findHours(wr);
@@ -1374,13 +1382,16 @@ async function loadSheetWeek(offset){
     if(!hours) throw new Error("'"+tab+"' 시트에서 시수 줄을 찾지 못했어요.");
     const baseUse=base||(function(){ const b={}; ["1","2","3","4","5"].forEach(w=>b[w]=(S.tt[w]||[]).map(x=>x.s)); return b; })();
     const res=completeWeek(week,baseUse,hours,mon);
-    shPending={key:mondayKey(mon),label:tab.replace(/\(.*$/,"").trim(),res};
-    note.textContent="'"+tab+"' 시트로 완성했어요. 파란 칸은 시트에 적힌 그대로, 노란 칸은 시수에 맞춰 바꾼 칸이에요.";
-    drawSheetPreview(mon,hours);
+    const key=mondayKey(mon), label=tab.replace(/\(.*$/,"").trim();
+    const prev=S.weeks&&S.weeks[key]?clone(S.weeks[key]):null;
+    S.weeks=Object.assign({},S.weeks||{}); S.weeks[key]=Object.assign({label:label},res.out);
+    saveSettings(); renderTT(true);
+    note.textContent=label+" 시간표를 시수에 맞춰 완성해서 바로 적용했어요. 교실 화면과 패드에 보여요.";
+    drawSheetResult(out,note,mon,hours,{key,label,res,tab,week,prev});
   }catch(e){ note.textContent=e.message||String(e); }
 }
-function drawSheetPreview(mon,hours){
-  const out=$("shOut"); out.innerHTML=""; const r=shPending.res;
+function drawSheetResult(out,note,mon,hours,pend){
+  out.innerHTML=""; const r=pend.res;
   const wrap=el("div",{class:"scroll"}); const t=el("table",{class:"shtbl"});
   const hr=el("tr"); hr.appendChild(el("th",null,"")); for(let d=1;d<=5;d++){ const dt=addDays(mon,d-1); hr.appendChild(el("th",null,WD[d]+" "+(dt.getMonth()+1)+"/"+dt.getDate())); } t.appendChild(hr);
   for(let i=0;i<7;i++){
@@ -1390,15 +1401,48 @@ function drawSheetPreview(mon,hours){
     t.appendChild(tr);
   }
   wrap.appendChild(t); out.appendChild(wrap);
+  out.appendChild(el("p",{class:"note",style:"margin:6px 0 0"},"파란 칸: 시트에 적힌 그대로 · 노란 칸: 시수에 맞춰 바꾼 칸(나이스에서 고칠 칸)"));
   const cn=el("div",{class:"shcnt"}); Object.keys(hours).forEach(k=>{ const a=r.fin[k]||0, b=hours[k]; const sp=el("span",null,k+" "+a+"/"+b); if(a!==b) sp.className="bad"; cn.appendChild(sp); }); out.appendChild(cn);
   if(r.left.length) out.appendChild(el("p",{class:"note",style:"color:var(--alert)"},"자리가 모자라 못 넣은 과목: "+r.left.join(", ")+" (쉬는 날이 있는 주는 시수가 맞지 않을 수 있어요)"));
   const row=el("div",{class:"foot"});
-  const go=el("button",{class:"btn pri"},"이 시간표로 저장"); go.addEventListener("click",()=>{ S.weeks=Object.assign({},S.weeks||{}); const w=Object.assign({label:shPending.label},shPending.res.out); S.weeks[shPending.key]=w; saveSettings(); renderTT(true); toast("저장했어요. 교실 화면과 패드에 바로 보여요"); out.innerHTML=""; $("shNote").textContent=shPending.label+" 시간표를 저장했어요."; shPending=null; });
-  const no=el("button",{class:"btn"},"취소"); no.addEventListener("click",()=>{ out.innerHTML=""; shPending=null; $("shNote").textContent="저장하지 않았어요."; });
-  row.append(no,go); out.appendChild(row);
+  const undo=el("button",{class:"btn"},"되돌리기");
+  undo.addEventListener("click",()=>{ S.weeks=Object.assign({},S.weeks||{}); if(pend.prev) S.weeks[pend.key]=pend.prev; else delete S.weeks[pend.key]; saveSettings(); renderTT(true); out.innerHTML=""; note.textContent="불러오기 전으로 되돌렸어요."; });
+  const both=el("button",{class:"btn sun"},"공유 시트 빈칸도 채우기");
+  both.addEventListener("click",async()=>{ both.disabled=true; both.textContent="시트에 쓰는 중…";
+    try{ const n=await writeSheet(pend); both.textContent="시트에 "+n+"칸 채움"; note.textContent=pend.label+" 시간표를 적용했고, 공유 시트 "+S.classCode+" 표의 빈칸 "+n+"칸도 채웠어요."; }
+    catch(e){ both.disabled=false; both.textContent="공유 시트 빈칸도 채우기"; note.textContent=e.message||String(e); } });
+  row.append(undo,both); out.appendChild(row);
 }
-$("shThis").addEventListener("click",()=>loadSheetWeek(0));
-$("shNext").addEventListener("click",()=>loadSheetWeek(1));
+function weekMon(offset,base){ return parseYmd(mondayKey(addDays(base||new Date(),offset*7))); }
+/* 공유 시트의 우리 반 표에서, 지금도 비어 있는 칸만 채워요. 다른 반 표·이미 적힌 칸·서식은 건드리지 않아요 */
+function colA1(c){ let s=""; c++; while(c>0){ const m=(c-1)%26; s=String.fromCharCode(65+m)+s; c=Math.floor((c-1)/26); } return s; }
+async function writeSheet(pend){
+  await getSheetToken(true);
+  const now=await vals("'"+pend.tab+"'!A1:Z60");
+  const g=(r,c)=>((now[r]||[])[c]||"").toString().trim();
+  const data=[];
+  for(let d=1;d<=5;d++){ const col=pend.res.out[d]; if(!col) continue;
+    col.forEach((cell,i)=>{ const p=pend.week.pos[d]&&pend.week.pos[d][i]; if(!p||!cell||!cell.s) return;
+      if(pend.res.fixed[d][i]) return; if(g(p.r,p.c)!=="") return;
+      data.push({range:"'"+pend.tab+"'!"+colA1(p.c)+(p.r+1),values:[[cell.s]]}); }); }
+  if(!data.length) return 0;
+  await sheetGet("/values:batchUpdate",{write:true,body:{valueInputOption:"RAW",data:data}});
+  return data.length;
+}
+$("shThis").addEventListener("click",()=>loadSheetWeek(weekMon(0),$("shOut"),$("shNote")));
+$("shNext").addEventListener("click",()=>loadSheetWeek(weekMon(1),$("shOut"),$("shNote")));
+/* 교실 화면 시간표에서 바로 불러오기: 보고 있는 날짜가 들어 있는 주 */
+function openSheetLoad(){
+  overlay((sh,close)=>{
+    sh.style.width="min(760px,100%)";
+    const x=el("button",{class:"btn x"},"닫기"); x.addEventListener("click",close); sh.appendChild(x);
+    const mon=weekMon(0,viewDate());
+    sh.appendChild(el("h3",null,"공유 시트에서 시간표 불러오기"));
+    const note=el("p",{class:"note",style:"font-size:.95em"},""); const out=el("div");
+    sh.append(note,out);
+    loadSheetWeek(mon,out,note);
+  });
+}
 
 /* ---------- 교사용: 알림 보내기·학생 주소 ---------- */
 ["자리에 앉아요","패드 닫고 앞을 봐요","이동 준비해요","정리하고 줄 서요","쉬는 시간이에요"].forEach(q=>{ const b=el("button",null,q); b.addEventListener("click",()=>sendLive(q)); $("quick").appendChild(b); });
