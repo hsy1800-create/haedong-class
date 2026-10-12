@@ -1278,14 +1278,16 @@ const ABBR={"국":"국어","사":"사회","도":"도덕","수":"수학","과":"�
 function subjOf(name){
   const t=(name||"").replace(/\s/g,""); if(!t) return "";
   const m=t.match(/\(([국사도수과실체음미영창])\)$/); if(m) return ABBR[m[1]];
+  if(t.length===1 && ABBR[t]) return ABBR[t];
   for(const k of SUBJ) if(t.startsWith(k)) return k;
+  if(t.includes("체육")||t.startsWith("체율")||t.startsWith("대회")) return "체육";
   if(t.startsWith("연극")) return "국어";
   if(t.startsWith("국악")) return "음악";
   if(t.startsWith("자율")||t.startsWith("동아리")) return "창체";
   if(t.startsWith("공개")) return "사회";
   return "창체";
 }
-function shortName(name){ const t=(name||"").trim(); if(/^창체\(자율/.test(t.replace(/\s/g,""))) return "창체"; return t; }
+function shortName(name){ let t=(name||"").trim().replace(/^체율/,"체육"); if(t.length===1 && ABBR[t]) t=ABBR[t]; if(/^창체\(자율/.test(t.replace(/\s/g,""))) return "창체"; return t; }
 const SHEET_TOK={};
 async function getSheetToken(write){
   const key=write?"w":"r"; const have=SHEET_TOK.w||SHEET_TOK[key];
@@ -1311,23 +1313,49 @@ function findWeekTab(titles,monday){
   titles.forEach(t=>{ const m=t.match(/\((\d{1,2})\.(\d{1,2})\s*[~∼-]/); if(!m) return; const d=new Date(y,+m[1]-1,+m[2]); if(Math.abs(d-monday)<3*86400000) best=t; });
   return best;
 }
-function findClassTable(rows,code){
-  const g=(r,c)=>((rows[r]||[])[c]||"").toString().trim();
-  for(let r=0;r<rows.length;r++) for(let c=0;c<(rows[r]||[]).length;c++){
-    if(g(r,c)!==code) continue;
-    for(let h=r+1;h<=r+3;h++){ for(let cc=Math.max(0,c-6);cc<c+8;cc++){ if(g(h,cc).startsWith("월") && g(h,cc+1).startsWith("화")){
-      const lab=cc-1, out={pos:{}}; for(let d=0;d<5;d++){ out[d+1]=[]; out.pos[d+1]=[]; }
-      for(let pr=h+1;pr<h+10;pr++){ const m=g(pr,lab).match(/^(\d)교시/); if(!m) continue; const p=+m[1];
-        for(let d=0;d<5;d++){ out[d+1][p-1]=g(pr,cc+d); out.pos[d+1][p-1]={r:pr,c:cc+d}; } }
-      return out; } } }
+function tableAt(rows,r,c){
+  const g=(rr,cc)=>((rows[rr]||[])[cc]||"").toString().trim();
+  for(let h=r+1;h<=r+1;h++){   // 제목 바로 다음 줄이 월·화… 머리글인 표만 봐요
+    const cands=[]; for(let cc=Math.max(1,c-3);cc<=c+4;cc++) if(g(h,cc).startsWith("월") && g(h,cc+1).startsWith("화")) cands.push(cc);
+    cands.sort((x,y)=>Math.abs(x-(c+1))-Math.abs(y-(c+1)));   // 제목 바로 오른쪽(제목 칸 = 교시 칸) 표를 골라요
+    if(!cands.length) continue;
+    const cc=cands[0], lab=cc-1, out={pos:{}}; for(let d=0;d<5;d++){ out[d+1]=[]; out.pos[d+1]=[]; }
+    let found=false;
+    for(let pr=h+1;pr<h+10;pr++){ const m=g(pr,lab).match(/^(\d)교시/); if(!m){ if(found) break; continue; } found=true; const p=+m[1];   // 표가 끝나면 멈춰요(아래 표와 섞이지 않게)
+      for(let d=0;d<5;d++){ out[d+1][p-1]=g(pr,cc+d); out.pos[d+1][p-1]={r:pr,c:cc+d}; } }
+    if(found) return out;
   }
   return null;
+}
+function findClassTable(rows,code){
+  const g=(r,c)=>((rows[r]||[])[c]||"").toString().trim();
+  let mine=null; const extra=[];
+  for(let r=0;r<rows.length;r++) for(let c=0;c<(rows[r]||[]).length;c++){
+    const v=g(r,c); if(!v) continue;
+    if(v===code && !mine){ mine=tableAt(rows,r,c); continue; }
+    // 전담·특별실 표(6체육, 6영어, 6도덕, 과학실1 …)에 적힌 우리 반 수업도 모아요
+    const m=v.match(/^\d?(체육|영어|도덕|음악|미술|과학실|실과)\d*$/);
+    if(m){ const t=tableAt(rows,r,c); if(t) extra.push({subj:m[1]==="과학실"?"과학":m[1],t}); }
+  }
+  if(!mine) return null;
+  const re=new RegExp("^"+code.replace(/[-]/g,"\\-")+"(\\((.+)\\))?$");
+  extra.forEach(({subj,t})=>{ for(let d=1;d<=5;d++) (t[d]||[]).forEach((v,i)=>{ const m=(v||"").replace(/\s/g,"").match(re); if(!m) return;
+    if(!mine[d][i]) mine[d][i]=subj+(m[2]?"("+m[2]+")":""); }); });
+  return mine;
 }
 function findHours(rows){
   const g=(r,c)=>((rows[r]||[])[c]||"").toString().trim();
   for(let r=0;r<Math.min(rows.length,8);r++) for(let c=0;c<(rows[r]||[]).length;c++){
     if(!/^(기준)?시수$/.test(g(r,c))) continue;
-    const h={}; for(let cc=c+1;cc<(rows[r]||[]).length;cc++){ const k=subjOf(g(r,cc)); const n=g(r+1,cc); if(SUBJ.includes(k)&&g(r,cc)!=="합계"&&n!=="") h[k]=(h[k]||0)+(+n||0); }
+    const cols=[]; for(let cc=c+1;cc<Math.max((rows[r]||[]).length,(rows[r+1]||[]).length);cc++){ const hd=g(r,cc); if(/합계/.test(hd)) break; cols.push({hd,n:g(r+1,cc)}); }
+    while(cols.length && !cols[cols.length-1].hd && cols[cols.length-1].n==="") cols.pop();
+    const h={}; let last=-1;
+    cols.forEach((x,ix)=>{ let k=x.hd?subjOf(x.hd):"";
+      if(!x.hd){ // 머리글이 비어 있으면 앞뒤 과목 사이의 빠진 과목으로 봐요(예: 사회와 수학 사이 = 도덕)
+        let nextK=null; for(let j=ix+1;j<cols.length;j++) if(cols[j].hd){ nextK=subjOf(cols[j].hd); break; }
+        const hi=nextK?SUBJ.indexOf(nextK):SUBJ.length; for(let q=last+1;q<hi;q++){ if(!(SUBJ[q] in h)){ k=SUBJ[q]; break; } } }
+      if(!SUBJ.includes(k)) return; last=Math.max(last,SUBJ.indexOf(k));
+      if(x.n!=="") h[k]=(h[k]||0)+(+x.n||0); });
     return h;
   }
   return null;
@@ -1346,7 +1374,7 @@ function locOf(name){
 function completeWeek(week,base,hours,monday){
   const days=[1,2,3,4,5], grid={}, fixed={};
   days.forEach(d=>{ const date=addDays(monday,d-1); const n=isSchoolDay(date)?(+S.ppd[d]||0):0; grid[d]=[]; fixed[d]=[];
-    for(let i=0;i<n;i++){ const w=(week[d]||[])[i]||""; if(w){ grid[d][i]=w; fixed[d][i]=true; } else { grid[d][i]=shortName((base[d]||[])[i]||""); fixed[d][i]=false; } } });
+    for(let i=0;i<n;i++){ const w=(week[d]||[])[i]||""; if(w){ grid[d][i]=shortName(w); fixed[d][i]=true; } else { grid[d][i]=shortName((base[d]||[])[i]||""); fixed[d][i]=false; } } });
   const cnt={}; days.forEach(d=>grid[d].forEach(x=>{ const k=subjOf(x); if(k) cnt[k]=(cnt[k]||0)+1; }));
   const freed=[], need=[];
   Object.keys(hours).forEach(k=>{ const diff=(cnt[k]||0)-hours[k]; if(diff<0) for(let i=0;i<-diff;i++) need.push(k); });
