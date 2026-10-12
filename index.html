@@ -710,7 +710,7 @@ function renderTT(force){
   const vd=viewDate(); const box=$("tt");
   const isToday = viewKey===ymd(new Date());
   $("dLbl").textContent=(isToday?"오늘 · ":"")+korDate(vd);
-  $("sampleWarn").hidden=!S.ttSample;
+  $("sampleWarn").hidden=!S.ttSample || !!weekOf(vd);
   const wk=weekOf(vd); $("ttSrc").textContent=wk?(wk.label||"주간")+" 시간표":"기초 시간표";
   box.innerHTML="";
   if(!isSchoolDay(vd)){
@@ -743,7 +743,7 @@ function renderTT(force){
     if(p.changed){ const c=document.createElement("span"); c.className="changed"; c.textContent="오늘 변경"; l1.appendChild(c); }
     const sup=document.createElement("div"); sup.className="sup"+(STUDENT&&!p.sup?" empty":"");
     const lb=document.createElement("label"); lb.textContent="준비물"; lb.htmlFor="sup"+p.n;
-    const inp=document.createElement("input"); inp.id="sup"+p.n; inp.type="text"; inp.dataset.sup=p.n; inp.value=p.sup; inp.placeholder=STUDENT?"":"쉼표로 나눠 적기 (예: 각도기, 색연필)"; inp.readOnly=STUDENT;
+    const inp=document.createElement("input"); inp.id="sup"+p.n; inp.type="text"; inp.dataset.sup=p.n; inp.value=p.sup; inp.placeholder=""; inp.readOnly=STUDENT;
     inp.addEventListener("input",()=>{ D.sup=D.sup||{}; D.sup[p.n]=inp.value; saveDay(); });
     inp.addEventListener("blur",()=>setTimeout(()=>{ if(!(document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.sup)) renderTT(true); },50));
     sup.append(lb,inp);
@@ -1040,7 +1040,7 @@ function openSettings(){
             const op=arr[i]||P(""); if(np.s!==op.s||np.m!==op.m||np.loc!==op.loc) changed=true; arr[i]=np; }
           for(let i=0;i<n;i++) if(!arr[i]) arr[i]=P("");
           T.tt[w]=arr; T.ppd[w]=n; });
-        if(changed) T.ttSample=false;
+        T.ttSample=false;   // 시간표 탭을 열어 저장하면 우리 반 시간표로 봐요
       }
       if(cur==="angel"){ T.rot={date:v("rD")||T.rot.date,no:Math.max(1,+v("rN")||1)}; T.roleA=v("roleA"); T.roleB=v("roleB"); T.tasksA=v("tA"); T.tasksB=v("tB"); T.holidays=v("hol"); }
       if(cur==="alarm"){ T.alarm={lead:+v("aLead")||3,all:document.getElementById("aAll").checked,sound:document.getElementById("aSnd").checked}; }
