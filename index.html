@@ -147,7 +147,7 @@ input,textarea,select{font:inherit;color:inherit}
 /* 아침활동·알림장 */
 .morning{flex:0 0 auto}
 .morning textarea{min-height:5.2em}
-.info .pad{font-size:1.3em;min-height:3.4em}
+.info .pad{font-size:var(--isz,1.8em);line-height:1.5;min-height:3em}
 .notice{flex:1}
 .pad{flex:1;width:100%;resize:none;border:0;background:transparent;font-size:1.35em;line-height:1.6;padding:0;min-height:6em}
 .pad:focus{outline:none}
@@ -350,7 +350,7 @@ table.bell input{width:6.5em}
         <textarea class="pad" id="notice" placeholder="1. 수학 익힘책 54~55쪽&#10;2. 내일 체육복 입고 오기"></textarea>
       </div>
       <div class="card info" id="cInfo">
-        <div class="head"><h2>안내사항 <span class="tag">지울 때까지 계속 보여요</span></h2><button class="fold" id="fInfo">접기</button></div>
+        <div class="head"><h2>안내사항 <span class="tag">지울 때까지 계속 보여요</span></h2><div class="hd-r"><span class="fsz"><button id="isDown" aria-label="안내사항 글씨 작게">가−</button><button id="isUp" aria-label="안내사항 글씨 크게">가+</button></span><button class="fold" id="fInfo">접기</button></div></div>
         <div class="peek" id="pInfo"></div>
         <textarea class="pad" id="info" placeholder="예) 10월 9일(금) 한글날 · 쉬는 날&#10;예) 가정통신문 회신은 금요일까지"></textarea>
       </div>
@@ -440,7 +440,7 @@ const P = (s,m,loc)=>({s:s||"",m:!!m,loc:loc||""});
 const DEFAULTS = {
   className:"해동성국", classSub:"6학년 6반 · 해처럼 밝은 아이들이 성장하는 나라",
   sheetId:"1OyS-vr25tJpAJJZd7UAxBEaAEjyvY3bckZnn0FRqQVo", classCode:"6-6",
-  students:23, names:"", skip:"15, 17", noticeSize:1.8, info:"", pinHash:"",
+  students:23, names:"", skip:"15, 17", noticeSize:1.8, infoSize:1.8, info:"", pinHash:"",
   theme:{id:"haedong",custom:{wall:"#F2C65C",floor:"#4A2D1B",accent:"#D9432F"}},
   teacherLinks:[{name:"아이스크림 초등",url:"https://www.i-scream.co.kr"},{name:"두클래스",url:"https://ele.douclass.com"},{name:"자작자작",url:"https://www.jajakjajak.com"},{name:"수페",url:""},{name:"6학년 공유 시트",url:""}],
   studentLinks:[{name:"자작자작",url:"https://www.jajakjajak.com"}],
@@ -727,6 +727,7 @@ function renderHeader(){
   $("classSub").textContent=S.classSub||"";
   $("mTime").textContent=S.morning.start+"~"+S.morning.end;
   document.documentElement.style.setProperty("--nsz",(+S.noticeSize||1.8)+"em");
+  document.documentElement.style.setProperty("--isz",(+S.infoSize||1.8)+"em");
   applyTheme();
   renderLinks();
 }
@@ -1218,6 +1219,9 @@ $("fMorning").addEventListener("click",()=>{ FOLD.m=!FOLD.m; lsSet("hd-fold",FOL
 $("fNotice").addEventListener("click",()=>{ FOLD.n=!FOLD.n; lsSet("hd-fold",FOLD); applyFold(); });
 function fontStep(d){ S.noticeSize=Math.round(Math.min(3.4,Math.max(1.2,(+S.noticeSize||1.8)+d))*10)/10; document.documentElement.style.setProperty("--nsz",S.noticeSize+"em"); saveSettings(); }
 $("fsUp").addEventListener("click",()=>fontStep(.2));
+function infoStep(d){ S.infoSize=Math.round(Math.min(3.4,Math.max(1.2,(+S.infoSize||1.8)+d))*10)/10; document.documentElement.style.setProperty("--isz",S.infoSize+"em"); saveSettings(); }
+$("isUp").addEventListener("click",()=>infoStep(.2));
+$("isDown").addEventListener("click",()=>infoStep(-.2));
 $("fsDown").addEventListener("click",()=>fontStep(-.2));
 
 /* ---------- 바로가기·교사용 ---------- */
