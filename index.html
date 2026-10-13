@@ -406,6 +406,7 @@ table.bell input{width:6.5em}
         <div class="send"><input type="text" id="liveText" placeholder="보낼 말을 적어 주세요" maxlength="80"><button class="btn sun" id="liveSend">보내기</button></div>
         <p class="note" id="liveNote">학생 화면을 켜 둔 모든 패드와 이 화면에 크게 떠요.</p>
         <div class="stu" id="stuBox"></div>
+        <div class="stu" id="pwBox" style="display:block"></div>
       </div>
       <div class="card" style="flex:1">
         <div class="head"><h2>지난 알림장</h2><button class="btn" id="hLoad" style="padding:4px 12px">새로 불러오기</button></div>
@@ -590,8 +591,34 @@ function loginScreen(auth,msg){
   sh.append(el("h3",null,"교사용 화면"),el("div",{style:"color:var(--muted);margin-bottom:14px"},msg||"선생님 구글 계정으로 로그인해 주세요."));
   const go=el("button",{class:"btn pri",style:"width:100%;font-size:1.1em;padding:12px"},"구글 계정으로 로그인"); sh.appendChild(go);
   go.addEventListener("click",async()=>{ try{ await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }catch(e){ toast(e&&e.code==="auth/popup-blocked"?"팝업이 막혔어요. 주소창 오른쪽에서 팝업을 허용해 주세요":"로그인하지 못했어요. 다시 눌러 주세요"); } });
+  // 학교 와이파이가 구글 로그인 창(firebaseapp.com)을 막는 태블릿용: 이메일·비밀번호 로그인은 그 주소를 거치지 않아요
+  const pw=el("div",{style:"margin-top:16px;border-top:1px dashed var(--line);padding-top:14px;text-align:left"});
+  pw.appendChild(el("div",{style:"font-weight:700;margin-bottom:4px"},"태블릿에서는 비밀번호로 로그인"));
+  pw.appendChild(el("div",{class:"note",style:"margin:0 0 8px"},"구글 로그인 창이 안 열릴 때 써요. 비밀번호는 컴퓨터의 교사용 탭에서 먼저 만들어요."));
+  const em=el("input",{type:"email",id:"loginEmail",autocomplete:"username",placeholder:"이메일"}); em.value="hsy1800@gmail.com";
+  const pv=el("input",{type:"password",id:"loginPw",autocomplete:"current-password",placeholder:"비밀번호"});
+  [em,pv].forEach(x=>{ x.style.cssText="width:100%;font-size:1.05em;letter-spacing:0;text-align:left;margin:4px 0;padding:10px;border:2px solid var(--line);border-radius:10px;background:var(--panel)"; });
+  const pgo=el("button",{class:"btn",style:"width:100%;margin-top:6px;padding:10px"},"비밀번호로 로그인");
+  const doPw=async()=>{ try{ await auth.signInWithEmailAndPassword(em.value.trim(),pv.value); }catch(e){ const c=e&&e.code||""; toast(/wrong-password|invalid-credential|invalid-login/.test(c)?"비밀번호가 맞지 않아요":/user-not-found/.test(c)?"아직 비밀번호를 만들지 않았어요. 컴퓨터의 교사용 탭에서 먼저 만들어 주세요":/operation-not-allowed/.test(c)?"비밀번호 로그인이 아직 꺼져 있어요":"로그인하지 못했어요. 다시 해 주세요"); } };
+  pgo.addEventListener("click",doPw); pv.addEventListener("keydown",e=>{ if(e.key==="Enter") doPw(); });
+  pw.append(em,pv,pgo); sh.appendChild(pw);
   const stu=el("a",{href:studentUrl(),style:"display:block;margin-top:14px;color:var(--sea);font-weight:600"},"학생 화면으로 가기"); sh.appendChild(stu);
   w.appendChild(sh); document.body.appendChild(w);
+}
+/* 교사용 탭: 구글 계정에 태블릿용 비밀번호를 붙여요(같은 계정이라 권한도 같아요) */
+function renderPwBox(){
+  const box=document.getElementById("pwBox"); if(!box) return; box.innerHTML="";
+  const u=window.firebase&&firebase.auth&&firebase.auth().currentUser;
+  if(!u||u.isAnonymous){ box.appendChild(el("p",{class:"note",style:"margin:0"},"학급 서버 버전에서 로그인하면 여기서 태블릿용 비밀번호를 만들 수 있어요.")); return; }
+  const has=(u.providerData||[]).some(p=>p.providerId==="password");
+  box.appendChild(el("div",{style:"font-weight:700;margin-bottom:4px"},"태블릿용 비밀번호 "+(has?"(만들어 둠)":"")));
+  box.appendChild(el("div",{class:"note",style:"margin:0 0 8px"},"학교 와이파이에서 구글 로그인 창이 막힐 때, 태블릿에서는 "+(u.email||"이 계정")+" + 이 비밀번호로 로그인해요. 6자 이상."));
+  const row=el("div",{class:"send"}); const ip=el("input",{type:"password",id:"newPw",autocomplete:"new-password",placeholder:has?"새 비밀번호로 바꾸기":"비밀번호 정하기"});
+  const b=el("button",{class:"btn sun"},has?"바꾸기":"만들기");
+  b.addEventListener("click",async()=>{ const v=ip.value; if(v.length<6){ toast("6자 이상으로 정해 주세요"); return; }
+    try{ if(has) await u.updatePassword(v); else await u.linkWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,v)); ip.value=""; toast("태블릿용 비밀번호를 저장했어요"); renderPwBox(); }
+    catch(e){ const c=e&&e.code||""; toast(/requires-recent-login/.test(c)?"보안을 위해 로그아웃 후 다시 로그인하고 해 주세요":/operation-not-allowed/.test(c)?"비밀번호 로그인이 아직 꺼져 있어요":/weak-password/.test(c)?"더 긴 비밀번호로 해 주세요":"저장하지 못했어요: "+c); } });
+  row.append(ip,b); box.appendChild(row);
 }
 async function signOut(){ try{ await firebase.auth().signOut(); }catch(e){} location.reload(); }
 function claudeStore(db){
@@ -650,7 +677,7 @@ async function connect(tries){
   if(window.FIREBASE_CONFIG){
     setSync(STUDENT?"연결 중…":"로그인 확인 중…");
     try{ const st=await firebaseStore(window.FIREBASE_CONFIG); startStore(st);
-      if(!STUDENT && st.user){ setSync("파이어베이스 · "+(st.user.email||"")); addLogout(); } }
+      if(!STUDENT && st.user){ setSync("파이어베이스 · "+(st.user.email||"")); addLogout(); renderPwBox(); } }
     catch(e){ setSync("파이어베이스 연결 실패 · 이 기기에 저장 중"); }
     return;
   }
@@ -796,7 +823,7 @@ function renderAngels(){
   $("aNext").textContent="다음("+(nx.getMonth()+1)+"/"+nx.getDate()+"): "+a2[0]+"번, "+a2[1]+"번";
 }
 function renderDay(){ renderTT(); renderPads(); renderAngels(); }
-function renderAll(){ renderHeader(); renderTT(true); renderPads(); renderAngels(); renderStu(); lockScreen(); }
+function renderAll(){ renderHeader(); renderTT(true); renderPads(); renderAngels(); renderStu(); renderPwBox(); lockScreen(); }
 
 /* ---------- 상태 띠·시계 ---------- */
 function status(now){
