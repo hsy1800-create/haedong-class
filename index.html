@@ -719,6 +719,7 @@ async function sendLive(text){
 function setView(d){
   viewKey=ymd(d); D=lsGet("hd-day-"+viewKey)||{}; C=lsGet("hd-chk-"+viewKey)||{};
   subscribeDay(); subscribeChecks(); renderDay();
+  window.dispatchEvent(new CustomEvent("school-date",{detail:viewKey}));
 }
 function viewDate(){ return parseYmd(viewKey); }
 
@@ -1541,5 +1542,6 @@ connect(0);
 })();
 </script>
 
+<script src="school-info.js"></script>
 </body>
 </html>
