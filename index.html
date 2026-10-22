@@ -555,20 +555,45 @@ button.kid:hover{border-color:var(--c)}
 .me-row .bar i{display:block;height:100%;background:var(--c);border-radius:inherit}
 .me-row .left{grid-column:1/-1;color:var(--muted);font-weight:600;font-size:.9em}
 .ib.wide,.seg button{white-space:nowrap}
-@media (max-width:700px){.clockwrap{flex-wrap:wrap;justify-content:center}.datebox{flex-basis:100%}.iconbtns{flex-wrap:wrap;justify-content:center}}
+/* ===== 머리띠: 날짜·시계를 가운데 크게 ===== */
+.top{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px 28px;padding:12px 22px}
+.top>.status.teaching-belief{justify-self:start}
+.top>.clockwrap{justify-self:center;gap:clamp(14px,1.4vw,28px)}
+.top>.clockwrap .datebox{text-align:right;line-height:1.08;padding-right:clamp(14px,1.4vw,28px);border-right:2px solid color-mix(in srgb,var(--bg) 28%,transparent)}
+.top>.clockwrap .datebox .d{display:flex;flex-direction:column;font-family:var(--f-display);font-weight:var(--fw-d);font-size:clamp(24px,2.35vw,48px);white-space:nowrap}
+.top>.clockwrap .datebox .wd,.topright .school-countdowns b{color:color-mix(in srgb,var(--sun) 62%,var(--bg))}
+.top>.clockwrap .clock{font-size:clamp(58px,6.4vw,132px);font-weight:800;letter-spacing:-.01em;line-height:.95;white-space:nowrap}
+.top>.clockwrap .clock .sec{font-size:.3em;opacity:.6;margin-left:.12em;font-weight:700}
+.topright{justify-self:end;display:flex;flex-direction:column;align-items:flex-end;gap:8px;min-width:0}
+.topright .iconbtns{flex-wrap:wrap;justify-content:flex-end}
+.topright .sync{text-align:right}
+.topright .school-countdowns{margin:0;justify-content:flex-end}
+@media (max-width:1100px){
+  .top{grid-template-columns:minmax(0,1fr) auto}
+  .top>.clockwrap{justify-self:start}
+}
+@media (max-width:700px){
+  .top{grid-template-columns:1fr}
+  .top>.clockwrap,.topright{justify-self:center}
+  .topright{align-items:center}
+  .topright .iconbtns,.topright .school-countdowns{justify-content:center}
+  .topright .sync{text-align:center}
+}
 body.rs-col{cursor:col-resize;user-select:none}
 body.rs-row{cursor:row-resize;user-select:none}
 </style>
 <div class="app">
   <header class="top">
     <div class="status teaching-belief" aria-label="우리 반 선생님의 교직관"><div class="now" id="stNow">“세상은 재미있는 곳이란다.<br>우리는 남들에게 이기거나 지려고 태어난게 아니야.<br>내 몫만큼 즐겁게 살려고 온 것이지”</div><div class="sub" id="stSub">한상복, 『재미』</div></div>
-    <div class="brand">
+    <div class="brand" hidden>
       <svg class="sunmark" id="mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="30" r="11" fill="var(--sun)"/><g stroke="var(--sun)" stroke-width="3" stroke-linecap="round"><path d="M24 8v6M9 15l4 4M39 15l-4 4M4 30h6M38 30h6"/></g><path d="M2 41c6-3 10 3 16 0s10-3 16 0 10 3 12 0" fill="none" stroke="var(--sea-soft)" stroke-width="3" stroke-linecap="round"/></svg>
       <div><h1 id="className">해동성국</h1><small id="classSub">6학년 6반 · 해처럼 밝은 아이들이 성장하는 나라</small></div>
     </div>
-    <div class="clockwrap">
-      <div class="datebox"><div class="d" id="dDate">&nbsp;</div><div class="sync" id="sync">불러오는 중</div></div>
+    <div class="clockwrap" role="timer" aria-label="오늘 날짜와 지금 시각">
+      <div class="datebox"><div class="d" id="dDate">&nbsp;</div></div>
       <div class="clock" id="clock">--:--</div>
+    </div>
+    <div class="topright" id="topRight">
       <div class="iconbtns">
         <a class="ib wide tonly" id="btnLesson" target="_blank" rel="noopener" title="수업판 열기" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M7 20h10M12 16v4M7 8.5h6M7 11.5h4"/></svg><span>수업판</span></a>
         <div class="seg" role="group" aria-label="화면 고르기"><button id="vClass" aria-pressed="true">교실</button><button id="vReward" aria-pressed="false">보상판</button><button id="vTeacher" aria-pressed="false">교사용</button></div>
@@ -577,6 +602,7 @@ body.rs-row{cursor:row-resize;user-select:none}
         <button class="ib" id="btnFull" title="전체 화면" aria-label="전체 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
         <button class="ib" id="btnSet" title="설정" aria-label="설정"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
       </div>
+      <div class="sync" id="sync">불러오는 중</div>
     </div>
   </header>
 
@@ -1310,7 +1336,7 @@ let lastDay=ymd(new Date()), lastMin=-1;
 function tick(){
   const now=new Date();
   $("clock").innerHTML=pad2(now.getHours())+":"+pad2(now.getMinutes())+'<span class="sec">'+pad2(now.getSeconds())+"</span>";
-  $("dDate").textContent=now.getFullYear()+"년 "+korDate(now);
+  const dk=ymd(now); const dd=$("dDate"); if(dd.dataset.k!==dk){ dd.dataset.k=dk; dd.innerHTML=""; dd.append(el("span",{class:"md"},(now.getMonth()+1)+"월 "+now.getDate()+"일"),el("span",{class:"wd"},WD[now.getDay()]+"요일")); dd.title=now.getFullYear()+"년 "+korDate(now); }
   if(ymd(now)!==lastDay){ const was=lastDay; lastDay=ymd(now); if(viewKey===was) setView(now); fired.clear(); }
   if(now.getMinutes()!==lastMin || now.getSeconds()%15===0){ lastMin=now.getMinutes(); markNow(); }
   checkAlarms(now); checkBell(now); checkAwardPrompt(now); timerTick(); renderNow(now);

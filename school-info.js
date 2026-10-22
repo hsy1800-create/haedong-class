@@ -23,7 +23,8 @@
   const countdowns = make('div', undefined, 'school-countdowns');
   countdowns.setAttribute('aria-label','학교 주요 일정 디데이');
   countdowns.setAttribute('aria-live','polite');
-  document.querySelector('.top').append(countdowns);
+  const topRight = document.getElementById('topRight');
+  if (topRight) topRight.insertBefore(countdowns, document.getElementById('sync')); else document.querySelector('.top').append(countdowns);
   const card = make('div', undefined, 'card tab c-tang school-meal');
   card.id = 'cMeal';
   const head = make('div', undefined, 'head');
