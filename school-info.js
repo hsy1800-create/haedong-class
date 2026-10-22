@@ -23,10 +23,15 @@
   const countdowns = make('div', undefined, 'school-countdowns');
   countdowns.setAttribute('aria-label','학교 주요 일정 디데이');
   countdowns.setAttribute('aria-live','polite');
-  document.querySelector('.top').append(countdowns);
-  const card = make('div', undefined, 'card school-meal');
+  const topRight = document.getElementById('topRight');
+  if (topRight) topRight.insertBefore(countdowns, document.getElementById('sync')); else document.querySelector('.top').append(countdowns);
+  const card = make('div', undefined, 'card tab c-tang school-meal');
+  card.id = 'cMeal';
   const head = make('div', undefined, 'head');
-  head.append(make('h2', '급식표'));
+  const title = make('h2');
+  title.innerHTML = '<span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 12.5h17a8.5 8.5 0 0 1-17 0zM9 21h6"/><path d="M13.5 3.5l-2.5 6M18 3.5l-2.5 6"/></svg></span>';
+  title.append('급식표');
+  head.append(title);
   const dateLabel = make('span', undefined, 'school-meal-date'); head.append(dateLabel);
   const meals = make('div', undefined, 'school-body');
   meals.setAttribute('aria-live', 'polite');
@@ -102,6 +107,9 @@
       }).catch(error=>{if(run===generation)showError(meals,error);}),
       cached('countdowns-'+scope+'-'+current, () => scheduleRange(current,end,apiKey)).then(rows => {
         if (run !== generation) return;
+        // 안내사항 칸이 비어 있을 때 '다가오는 학교 일정'으로 보여 줘요
+        window.hdSchedule = rows;
+        window.dispatchEvent(new Event('school-schedule'));
         countdowns.replaceChildren();
         const sorted = [...rows].sort((a,b)=>a.AA_YMD.localeCompare(b.AA_YMD));
         for (const [label, match] of [['종업',/종업/],['졸업',/졸업/],['겨울방학',/겨울.*방학/]]) {
