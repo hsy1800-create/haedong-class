@@ -671,6 +671,93 @@ button.kid:hover{border-color:var(--c)}
 body.rs-col{cursor:col-resize;user-select:none}
 body.rs-row{cursor:row-resize;user-select:none}
 </style>
+
+<style>
+/* ===== 수업 루틴: 도입 → 활동 1·2 → 함께 구조화 → 정리 ===== */
+.rtv{display:grid;gap:12px;grid-template-columns:1fr;min-height:0;align-items:start}
+@media (min-width:1100px){.rtv{grid-template-columns:minmax(0,2.15fr) minmax(290px,1fr);align-items:stretch}.rtv>.card,.rt-side{min-height:0;overflow:auto}}
+.rt-side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.rt-side>.card{flex:0 0 auto}
+.rt-head{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap}
+.rt-per{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:var(--fw-d);font-size:1.65em;line-height:1.1}
+.rt-per b{background:var(--c);color:var(--con);border-radius:.4em;padding:.06em .45em;font-weight:inherit}
+.rt-time{color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.rt-chip{font-weight:700;font-size:.82em;border-radius:999px;padding:3px 12px;background:var(--csoft);color:var(--ci);white-space:nowrap}
+.rt-chip.live{background:var(--c);color:var(--con)}
+.rt-sp{flex:1}
+.rt-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.rt-tools .btn{padding:5px 12px}
+.rt-unit{margin-top:14px;font-family:var(--f-display);font-weight:var(--fw-d);font-size:clamp(22px,2.1vw,40px);line-height:1.25;word-break:keep-all}
+.rt-unit small{display:block;font-family:var(--f-body);font-size:.46em;font-weight:700;color:var(--muted);margin-bottom:2px}
+.rt-unit .ls{color:var(--ci)}
+.rt-q{margin-top:12px;background:var(--csoft);border:2px solid var(--cline);border-radius:14px;padding:12px 16px}
+.rt-q span{display:block;font-weight:800;font-size:.85em;color:var(--ci)}
+.rt-q p{margin:2px 0 0;font-family:var(--f-display);font-weight:var(--fw-d);font-size:clamp(22px,2.2vw,42px);line-height:1.3;word-break:keep-all;white-space:pre-wrap}
+.rt-blank{margin-top:14px;border:2px dashed var(--cline);border-radius:14px;padding:12px 16px;color:var(--muted);font-weight:600;word-break:keep-all}
+.rt-big{margin:18px 0 6px;font-family:var(--f-display);font-weight:var(--fw-d);font-size:clamp(26px,2.6vw,48px);line-height:1.25;word-break:keep-all}
+.rt-steps{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.rt-step{display:grid;grid-template-columns:5em minmax(0,1fr) auto;gap:6px 14px;align-items:center;border:2px solid var(--line);border-radius:14px;padding:8px 12px;background:var(--panel)}
+.rt-step .tg{align-self:stretch;display:grid;place-items:center;border-radius:10px;background:var(--bg);font-family:var(--f-display);font-weight:var(--fw-d);font-size:1.15em;text-align:center;line-height:1.1;padding:6px 4px}
+.rt-step .bd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.rt-step .tt{flex:0 0 auto;max-width:100%;font-family:var(--f-display);font-weight:var(--fw-d);font-size:1.3em;line-height:1.2;word-break:keep-all}
+.rt-step .vc{font-size:.8em;font-weight:700;color:var(--muted);white-space:nowrap;margin-right:6px}
+.rt-step .its{display:flex;flex-wrap:wrap;gap:6px}
+.rt-step .it{border:1.5px solid var(--line);border-radius:999px;padding:3px 12px;font-weight:600;font-size:.95em;background:var(--bg)}
+.rt-step.now{border-color:var(--c);box-shadow:0 0 0 3px var(--csoft)}
+.rt-step.now .tg{background:var(--c);color:var(--con)}
+.rt-step.past .tg{background:color-mix(in srgb,var(--ok) 18%,var(--panel));color:var(--ok)}
+.rt-step.locked{opacity:.55}
+.rt-cnt{font-weight:800;font-size:.85em;border-radius:999px;padding:2px 10px;background:var(--csoft);color:var(--ci);white-space:nowrap;font-variant-numeric:tabular-nums}
+.rt-cnt.zero{background:none;color:var(--muted);font-weight:600}
+.rt-step .its.do{flex-basis:100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(11.5em,1fr));gap:8px}
+.rt-ck{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;font-weight:700;font-size:1.05em;min-height:3.1em;word-break:keep-all}
+.rt-ck i{flex:none;width:1.5em;height:1.5em;border-radius:.4em;border:2px solid var(--muted);display:grid;place-items:center;font-style:normal;font-weight:900;color:transparent}
+.rt-ck[aria-pressed="true"]{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--panel))}
+.rt-ck[aria-pressed="true"] i{background:var(--ok);border-color:var(--ok);color:#fff}
+.rt-ck:disabled{cursor:default}
+.rt-ck.tch{border-style:dashed}
+.rt-ck.tch small{display:block;font-weight:600;font-size:.78em;color:var(--muted)}
+.rt-msg{flex-basis:100%;color:var(--muted);font-weight:600;font-size:.92em;word-break:keep-all}
+.rt-gate{flex-basis:100%;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rt-gate .rt-msg{flex-basis:auto}
+.rt-me{margin-top:12px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 14px;align-items:center;border-radius:14px;padding:10px 14px;background:var(--bg)}
+.rt-me .who{font-family:var(--f-display);font-weight:var(--fw-d);font-size:1.3em;white-space:nowrap}
+.rt-me .say{font-weight:800;font-size:1.15em;word-break:keep-all}
+.rt-me .bar{grid-column:1/-1;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.rt-me .bar i{display:block;height:100%;background:var(--ok);border-radius:inherit;transition:width .3s}
+.rt-me.ok{background:color-mix(in srgb,var(--ok) 14%,var(--panel))}
+.rt-extra p{margin:0;font-family:var(--f-display);font-weight:var(--fw-d);font-size:clamp(20px,1.7vw,32px);line-height:1.3;word-break:keep-all}
+.rt-sum{font-family:var(--f-display);font-weight:var(--fw-d);font-size:1.6em;margin-bottom:10px}
+.rt-sum small{font-family:var(--f-body);font-size:.5em;color:var(--muted);font-weight:600;margin-left:6px}
+.rt-bars{display:flex;flex-direction:column;gap:7px}
+.rt-bar{display:grid;grid-template-columns:5.6em minmax(0,1fr) 2.6em;gap:8px;align-items:center;font-weight:700;font-size:.95em}
+.rt-bar .tr{height:14px;border-radius:99px;background:var(--csoft);overflow:hidden}
+.rt-bar .tr i{display:block;height:100%;background:var(--c);border-radius:inherit}
+.rt-bar.okb .tr i{background:var(--ok)}
+.rt-bar b{text-align:right;font-variant-numeric:tabular-nums}
+.rt-opt{display:flex;align-items:center;gap:8px;margin-top:12px;font-weight:600;font-size:.9em}
+.rt-kids{display:grid;grid-template-columns:repeat(auto-fill,minmax(6.6em,1fr));gap:6px;margin-top:10px}
+.rt-kid{display:flex;flex-direction:column;align-items:flex-start;gap:1px;border:2px solid var(--line);background:var(--panel);border-radius:10px;padding:5px 8px;text-align:left;min-width:0}
+.rt-kid b{font-size:.95em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.rt-kid span{font-size:.78em;font-weight:700;color:var(--muted);white-space:nowrap}
+.rt-kid.s-wait{border-color:var(--k-sun);background:color-mix(in srgb,var(--k-sun) 12%,var(--panel))}
+.rt-kid.s-wait span{color:var(--k-sun-ink)}
+.rt-kid.s-ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--panel))}
+.rt-kid.s-ok span{color:var(--ok)}
+.rt-kid.s-none{opacity:.55;border-style:dashed}
+.rt-week{display:flex;flex-direction:column;gap:10px}
+.rt-wd{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:10px;align-items:start;border-bottom:1px solid var(--line);padding-bottom:10px}
+.rt-wd>b{font-weight:800}
+.rt-wd ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.rt-wd li{border:1.5px solid var(--line);border-radius:999px;padding:3px 12px;font-weight:600;font-size:.92em;background:var(--bg)}
+.rt-wd li.ok{border-color:var(--ok);color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,var(--panel))}
+.rt-wd li.end{border-color:var(--k-sun)}
+.angel-me{display:flex;align-items:center;gap:10px;width:100%;margin-top:10px;border:2px solid var(--k-rose);background:color-mix(in srgb,var(--k-rose) 12%,var(--panel));border-radius:14px;padding:10px 14px;font-weight:800;text-align:left;color:var(--ink)}
+.angel-me b{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--k-rose-ink)}
+.angel-me.done{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--panel))}
+.angel-me.done b{color:var(--ok)}
+@media (max-width:700px){.rt-step{grid-template-columns:4.2em minmax(0,1fr)}.rt-step>.rt-cnt{grid-column:2;justify-self:start}}
+</style>
 <div class="app">
   <header class="top">
     <div class="status teaching-belief" aria-label="우리 반 선생님의 교직관"><div class="now" id="stNow">“세상은 재미있는 곳이란다.<br>우리는 남들에게 이기거나 지려고 태어난게 아니야.<br>내 몫만큼 즐겁게 살려고 온 것이지”</div><div class="sub" id="stSub">한상복, 『재미』</div></div>
@@ -685,7 +772,7 @@ body.rs-row{cursor:row-resize;user-select:none}
     <div class="topright" id="topRight">
       <div class="iconbtns">
         <a class="ib wide tonly" id="btnLesson" target="_blank" rel="noopener" title="수업판 열기" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M7 20h10M12 16v4M7 8.5h6M7 11.5h4"/></svg><span>수업판</span></a>
-        <div class="seg" role="group" aria-label="화면 고르기"><button id="vClass" aria-pressed="true">교실</button><button id="vReward" aria-pressed="false">보상판</button><button id="vTeacher" aria-pressed="false">교사용</button></div>
+        <div class="seg" role="group" aria-label="화면 고르기"><button id="vClass" aria-pressed="true">교실</button><button id="vRoutine" aria-pressed="false">수업</button><button id="vReward" aria-pressed="false">보상판</button><button id="vTeacher" aria-pressed="false">교사용</button></div>
         <button class="ib tonly inb" id="btnInbox" title="아이들이 보낸 메시지" aria-label="아이들이 보낸 메시지"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg><b class="nbadge" id="inbN" hidden></b></button>
         <button class="ib tonly" id="btnBell" aria-label="종소리" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/><path class="slash" d="M4 4l16 16"/></svg></button>
         <button class="ib" id="btnSkin" title="테마" aria-label="테마 고르기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.6-1.6 0-.5-.2-.8-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-4-4-7.4-9-7.4z"/><circle cx="7.5" cy="11" r="1.2" fill="currentColor"/><circle cx="10.5" cy="7.2" r="1.2" fill="currentColor"/><circle cx="15" cy="7.5" r="1.2" fill="currentColor"/></svg></button>
@@ -825,6 +912,11 @@ body.rs-row{cursor:row-resize;user-select:none}
       <div class="readys" id="ready"></div>
     </div>
   </main>
+
+  <main class="rtv" id="routineView" hidden>
+    <div class="card tab c-sky" id="rtMain"></div>
+    <div class="rt-side" id="rtSide"></div>
+  </main>
 </div>
 
 <div id="ovRoot"></div>
@@ -893,11 +985,21 @@ const DEFAULTS = {
   rot:{date:"2026-10-01",no:1},
   holidays:"2026-10-05\n2026-10-09",
   roleA:"학습 도우미", roleB:"교실 지킴이",
-  tasksA:"칠판에 날짜·요일 쓰기\n수업 전 교과서 준비 안내하기\n학습지·자료 나눠 주기\n걷을 것(과제·안내장) 걷기\n알림장 칠판에 옮겨 쓰기",
-  tasksB:"아침에 창문 열어 환기하기\n이동 수업 때 불 끄고 창문·문 닫기\n이동할 때 줄 맨 뒤에서 교실 확인하기\n쉬는 시간 칠판 지우기\n하교 전 창문 닫고 전등·TV 끄기",
+  /* 수호천사 두 명의 할 일은 똑같아요 ('짧은 이름 | 할 일') */
+  tasksA:"우유 | 1교시 후 우유 나눠주기\n학습지 | 학습지 나눠주기\n심부름 | 심부름하기\n분리수거 | 분리수거하기\n알림장 | 알림장 검사",
+  tasksB:"우유 | 1교시 후 우유 나눠주기\n학습지 | 학습지 나눠주기\n심부름 | 심부름하기\n분리수거 | 분리수거하기\n알림장 | 알림장 검사",
+  /* 수업 루틴: 수업이 시작되면 루틴 화면 띄우기, 다 한 사람은 할 일(교과마다), 루틴을 쓰지 않는 교과 */
+  routine:{auto:true,extra:"수학 | 수학익힘 쌍둥이 문제 풀기\n사회 | 사이다 풀기\n과학 | 과딱지 풀기",extraAll:"질문 하나 더 만들고 스스로 답하기",offSubj:"체육, 창체"},
   alarm:{lead:3,all:false,sound:true}
 };
+/* 저장된 설정을 한 번만 고쳐요: 2 = 수호천사 할 일을 두 명 똑같이 */
+const ANGEL_V=2;
 const clone = o => JSON.parse(JSON.stringify(o));
+/* 예전 설정을 새 방식으로 한 번 바꿔요 (선생님 화면에서만, 바꾸면 true) */
+function migrate(){
+  if(STUDENT || (+S.angelV||0)>=ANGEL_V) return false;
+  S.tasksA=DEFAULTS.tasksA; S.tasksB=DEFAULTS.tasksB; S.angelV=ANGEL_V; return true;
+}
 function merge(base, add){
   if(!add || typeof add!=="object" || Array.isArray(add)) return add===undefined?base:add;
   const out = Array.isArray(base)?base.slice():Object.assign({},base);
@@ -1099,7 +1201,7 @@ function startStore(store){
   DB=store; setSync(DB.kind+"에 저장됨");
   unsubS = DB.doc("cfg/main").onSnapshot(snap=>{
     if(snap.metadata.hasPendingWrites || timerS || busyS) return;
-    if(snap.exists){ S=merge(clone(DEFAULTS), clone(snap.data())); const a=document.activeElement; if(a&&a.id==="info") S.info=a.value; lsSet("hd-settings",S); renderAll(); }
+    if(snap.exists){ S=merge(clone(DEFAULTS), clone(snap.data())); const a=document.activeElement; if(a&&a.id==="info") S.info=a.value; const mg=migrate(); lsSet("hd-settings",S); renderAll(); if(mg) saveSettings(); }
   }, ()=>{});
   subscribeDay(); subscribeChecks(); subscribeLive(); subscribeR(); subscribeInbox(); if(view==="teacher") loadHistory();
 }
@@ -1118,16 +1220,23 @@ async function connect(tries){
   startStore(claudeStore(db));
 }
 function checksOf(role,len){ const src=(C&&C[role])||(D.checks&&D.checks[role])||[]; return Array.from({length:len},(_,j)=>!!src[j]); }
-let unsubC=null, timerC=null, busyC=false;
-function saveChecks(){
+let unsubC=null, timerC=null, busyC=false; const pendC=new Set();
+/* 당번 체크는 그 역할(A·B) 칸만 저장해요. checks/날짜 전체를 덮어쓰면 아이들 수업 루틴 체크가 지워질 수 있어서요 */
+function saveChecks(role){
   const key=viewKey; lsSet("hd-chk-"+key,C);
   if(!DB) return;
-  clearTimeout(timerC); timerC=setTimeout(async()=>{ timerC=null; busyC=true; try{ await DB.doc("checks/"+key).set(clone(C)); }catch(e){ setSync("체크 저장 실패"); } busyC=false; },400);
+  if(role) pendC.add(role);
+  clearTimeout(timerC); timerC=setTimeout(async()=>{ timerC=null; busyC=true; const roles=[...pendC]; pendC.clear();
+    try{
+      if(DB.kind==="파이어베이스" && roles.length){ for(const r of roles) await DB.doc("checks/"+key+"/"+r).set(clone(C[r]||[])); }
+      else await DB.doc("checks/"+key).set(clone(C));
+    }catch(e){ try{ await DB.doc("checks/"+key).set(clone(C)); }catch(e2){ setSync("체크 저장 실패"); } }
+    busyC=false; },400);
 }
 function subscribeChecks(){
   if(unsubC){ unsubC(); unsubC=null; }
   if(!DB) return; const key=viewKey;
-  unsubC=DB.doc("checks/"+key).onSnapshot(snap=>{ if(key!==viewKey||snap.metadata.hasPendingWrites||timerC||busyC) return; C=snap.exists?clone(snap.data()):{}; lsSet("hd-chk-"+key,C); renderAngels(); refreshTaskSheet(); },()=>{});
+  unsubC=DB.doc("checks/"+key).onSnapshot(snap=>{ if(key!==viewKey||snap.metadata.hasPendingWrites||timerC||busyC) return; C=snap.exists?clone(snap.data()):{}; lsSet("hd-chk-"+key,C); renderAngels(); refreshTaskSheet(); renderMe(); renderRoutine(); },()=>{});
 }
 /* 아이들 패드로 알림 보내기 */
 let unsubL=null; const BOOT=Date.now(); let lastLive=lsGet("hd-live-seen")||0;
@@ -1357,10 +1466,11 @@ const TASK_RULES=[
   [/날짜|요일/,"cal","날짜 쓰기"],
   [/알림장/,"note","알림장"],
   [/교과서/,"book","교과서"],
+  [/우유|급식/,"cup","급식"],
   [/나눠|나누|배부|학습지/,"hand","나눠 주기"],
   [/걷|수합|회수/,"tray","걷기"],
   [/청소|쓰레기|분리수거/,"broom","청소"],
-  [/우유|급식/,"cup","급식"],
+  [/심부름/,"steps","심부름"],
   [/화분|물\s*주/,"drop","화분"],
   [/출석|인원/,"people","출석"],
   [/TV|컴퓨터|전등|전원/,"power","전원 끄기"]
@@ -1401,8 +1511,8 @@ function renderAngels(){
   const nx=nextSchoolDay(vd); const a2=angelsFor(nx);
   $("aNext").textContent="다음("+(nx.getMonth()+1)+"/"+nx.getDate()+"): "+a2[0]+"번, "+a2[1]+"번";
 }
-function renderDay(){ renderTT(); renderPads(); renderAngels(); }
-function renderAll(){ renderHeader(); renderTT(true); renderPads(); renderAngels(); renderStu(); renderPwBox(); renderRewards(); lockScreen(); }
+function renderDay(){ renderTT(); renderPads(); renderAngels(); renderMe(); renderRoutine(); }
+function renderAll(){ renderHeader(); renderTT(true); renderPads(); renderAngels(); renderStu(); renderPwBox(); renderRewards(); renderRoutine(); lockScreen(); }
 
 /* ---------- 상태 띠·시계 ---------- */
 function status(now){
@@ -1449,7 +1559,7 @@ function tick(){
   const dk=ymd(now); const dd=$("dDate"); if(dd.dataset.k!==dk){ dd.dataset.k=dk; dd.innerHTML=""; dd.append(el("span",{class:"md"},(now.getMonth()+1)+"월 "+now.getDate()+"일"),el("span",{class:"wd"},WD[now.getDay()]+"요일")); dd.title=now.getFullYear()+"년 "+korDate(now); }
   if(ymd(now)!==lastDay){ const was=lastDay; lastDay=ymd(now); if(viewKey===was) setView(now); fired.clear(); }
   if(now.getMinutes()!==lastMin || now.getSeconds()%15===0){ lastMin=now.getMinutes(); markNow(); }
-  checkAlarms(now); checkBell(now); checkAwardPrompt(now); timerTick(); renderNow(now);
+  checkAlarms(now); checkBell(now); checkAwardPrompt(now); timerTick(); renderNow(now); rtTick(now);
 }
 
 /* ---------- 소리 ---------- */
@@ -1569,7 +1679,7 @@ function drawTasks(){
   if(!t.length) ul.appendChild(el("li",{style:"color:var(--muted)"},"선생님이 할 일을 아직 적지 않았어요."));
 }
 function toggleTask(role,j,val,len){
-  C=Object.assign({},C); C[role]=checksOf(role,len); C[role][j]=val; saveChecks(); renderAngels(); refreshTaskSheet();
+  C=Object.assign({},C); C[role]=checksOf(role,len); C[role][j]=val; saveChecks(role); renderAngels(); refreshTaskSheet(); renderMe(); renderRoutine();
   if(C[role].every(Boolean)) toast("모두 끝! 고마워요");
 }
 function refreshTaskSheet(){ const a=document.activeElement; if(a&&a.id&&a.id.startsWith("task")) return; drawTasks(); }
@@ -1598,7 +1708,7 @@ function openSettings(){
     const x=el("button",{class:"btn x"},"닫기"); x.addEventListener("click",close); sh.appendChild(x);
     sh.appendChild(el("h3",null,"설정"));
     const tabs=el("div",{class:"tabs",role:"tablist"}); const body=el("div"); sh.append(tabs,body);
-    const names=[["basic","우리 반"],["bell","시정표"],["week","시간표"],["angel","수호천사"],["reward","보상판"],["alarm","알림"]];
+    const names=[["basic","우리 반"],["bell","시정표"],["week","시간표"],["routine","수업 루틴"],["angel","수호천사"],["reward","보상판"],["alarm","알림"]];
     let cur="basic";
     names.forEach(([k,t])=>{ const b=el("button",{role:"tab"},t); b.dataset.k=k; b.addEventListener("click",()=>{ collect(); cur=k; draw(); }); tabs.appendChild(b); });
     function fld(label,input,hint){ const f=el("label",{class:"fld"}); f.appendChild(el("span",null,label)); f.appendChild(input); if(hint) f.appendChild(el("small",null,hint)); return f; }
@@ -1609,7 +1719,7 @@ function openSettings(){
       body.innerHTML="";
       if(cur==="basic"){
         const g=el("div",{class:"grid2"});
-        g.append(fld("학급 이름",inp("sName",T.className)), fld("작은 글씨",inp("sSub",T.classSub)), fld("학생 수",inp("sN",T.students,"number")), fld("결번",inp("sSkip",T.skip),"순서에서 뺄 번호. 예: 7, 15"));
+        g.append(fld("학급 이름",inp("sName",T.className)), fld("작은 글씨",inp("sSub",T.classSub)), fld("학생 수",inp("sN",T.students,"number")), fld("결번",inp("sSkip",T.skip),"수호천사 순서와 보상판에서 뺄 번호. 예: 15, 17 · 수업 루틴과 번호 고르기에는 그대로 나와요"));
         body.append(g, fld("학생 이름 (한 줄에 한 명, 1번부터)",ta("sNames",T.names),"비워 두면 번호만 보여요. 줄 순서가 번호예요."));
         const lb=T.lessonBoard||{}; const g2=el("div",{class:"grid2"});
         g2.append(fld("수업판 이름",inp("sLbName",lb.name)), fld("수업판 주소",inp("sLbUrl",lb.url,"url"),"머리띠의 '수업판' 버튼이 이 주소를 새 탭으로 열어요. 비우면 버튼이 사라져요."));
@@ -1652,6 +1762,16 @@ function openSettings(){
         }
         wrap.appendChild(tb); body.appendChild(wrap);
         body.appendChild(el("p",{class:"note"},"체크하면 이동 수업이에요. 시작 "+T.alarm.lead+"분 전에 이동 안내와 준비물이 화면에 떠요."));
+      }
+      if(cur==="routine"){
+        const r=Object.assign({},DEFAULTS.routine,T.routine||{});
+        const c=el("label",{class:"fld",style:"flex-direction:row;gap:8px;align-items:center"}); const au=el("input",{type:"checkbox",id:"rtA"}); au.checked=r.auto!==false;
+        c.append(au,el("span",null,"수업이 시작되면 교실 TV와 아이들 패드에 수업 루틴 화면 띄우기 (끝나고 3분 뒤 교실 화면으로 돌아가요)")); body.appendChild(c);
+        body.appendChild(fld("다 한 사람은 (교과마다 한 줄, '과목 | 할 일')",ta("rtX",r.extra),"활동 2까지 끝낸 아이 패드와 TV에 떠요. 예) 수학 | 수학익힘 쌍둥이 문제 풀기"));
+        const g=el("div",{class:"grid2"});
+        g.append(fld("그 밖의 교과 '다 한 사람은'",inp("rtXA",r.extraAll),"비우면 위에 적은 교과에만 떠요."), fld("루틴을 쓰지 않는 교과",inp("rtOffS",r.offSubj),"쉼표로 나눠요. 이동 수업은 저절로 빠져요. 수업 화면에서 그 시간만 켜고 끌 수도 있어요."));
+        body.appendChild(g);
+        body.appendChild(el("p",{class:"note"},"단원명·차시명·단원 질문은 수업 화면의 '내용 적기'에서 교시마다 적어요."));
       }
       if(cur==="angel"){
         const g=el("div",{class:"grid2"});
@@ -1704,6 +1824,7 @@ function openSettings(){
           T.tt[w]=arr; T.ppd[w]=n; });
         T.ttSample=false;   // 시간표 탭을 열어 저장하면 우리 반 시간표로 봐요
       }
+      if(cur==="routine"){ T.routine={auto:document.getElementById("rtA").checked,extra:(v("rtX")||"").trim(),extraAll:(v("rtXA")||"").trim(),offSubj:(v("rtOffS")||"").trim()}; }
       if(cur==="angel"){ T.rot={date:v("rD")||T.rot.date,no:Math.max(1,+v("rN")||1)}; T.roleA=v("roleA"); T.roleB=v("roleB"); T.tasksA=v("tA"); T.tasksB=v("tB"); T.holidays=v("hol"); }
       if(cur==="reward"){ T.reward={goal:Math.max(1,+v("rwG")||30),prize:(v("rwP")||"").trim()||"칭찬 쿠폰",classGoal:Math.max(1,+v("rwCG")||700),classPrize:(v("rwCP")||"").trim()||"반 파티",auto:document.getElementById("rwA").checked}; }
       if(cur==="alarm"){ T.alarm={lead:+v("aLead")||3,all:document.getElementById("aAll").checked,sound:document.getElementById("aSnd").checked}; }
@@ -2176,14 +2297,24 @@ function renderRewards(){
   renderMe();
 }
 function pickMe(){
+  const had=+lsGet("hd-me")||0;
   overlay((sh,close)=>{
-    sh.appendChild(el("h3",null,"내 번호를 눌러 주세요"));
-    sh.appendChild(el("div",{style:"color:var(--muted)"},"한 번 고르면 이 패드가 기억해요. 내 온도를 볼 수 있어요."));
-    const grid=el("div",{class:"kpick"});
-    roster().forEach(n=>{ const b=el("button",{class:"kp",type:"button","aria-pressed":"true"}); b.append(el("b",null,String(n)),el("span",null,nameOf(n)||" "));
-      b.addEventListener("click",()=>{ lsSet("hd-me",n); close(); renderRewards(); toast(n+"번으로 정했어요"); }); grid.appendChild(b); });
-    sh.appendChild(grid);
-  },{cls:"award"});
+    const draw=()=>{ sh.innerHTML="";
+      sh.appendChild(el("h3",null,"내 번호를 눌러 주세요"));
+      sh.appendChild(el("div",{style:"color:var(--muted)"},had?"번호는 선생님께 말하고 바꿔요. 이 패드의 체크가 고른 번호로 저장돼요.":"한 번 고르면 이 패드가 기억해요. 수업 루틴 체크와 내 온도가 이 번호로 저장돼요."));
+      const grid=el("div",{class:"kpick"});
+      kids().forEach(n=>{ const b=el("button",{class:"kp",type:"button","aria-pressed":"true"}); b.append(el("b",null,String(n)),el("span",null,nameOf(n)||" "));
+        b.addEventListener("click",()=>ask(n)); grid.appendChild(b); });
+      sh.appendChild(grid);
+      if(had){ const c=el("button",{class:"btn"},"그대로 두기"); c.addEventListener("click",close); sh.appendChild(c); } };
+    const ask=n=>{ sh.innerHTML=""; sh.style.textAlign="center";
+      sh.appendChild(el("h3",null,n+"번 "+(nameOf(n)||"")+" 맞아요?"));
+      const row=el("div",{class:"big2"}); const no=el("button",{class:"btn"},"다시 고르기"), yes=el("button",{class:"btn pri"},"네, 맞아요");
+      no.addEventListener("click",()=>{ sh.style.textAlign=""; draw(); });
+      yes.addEventListener("click",()=>{ lsSet("hd-me",n); close(); renderRewards(); renderRoutine(); toast(n+"번으로 정했어요"); });
+      row.append(no,yes); sh.appendChild(row); };
+    draw();
+  },{cls:"award",noBackdrop:!had});
 }
 function renderMe(){
   const c=$("cMe"); if(!c) return; c.hidden=!STUDENT; if(!STUDENT) return;
@@ -2194,6 +2325,7 @@ function renderMe(){
   const go=el("button",{class:"mini"},"보상판 보기"); go.addEventListener("click",()=>setMode("reward"));
   row.append(el("span",{class:"no"},me+"번 "+nameOf(me)),el("span",{class:"t"},t+"도"),go,bar,el("span",{class:"left"},"다음 "+cfg.prize+"까지 "+left+"도"));
   body.appendChild(row);
+  const ab=angelBanner(); if(ab) body.appendChild(ab);
 }
 /* ---------- 선생님 부르기: 해님 도우미 & 받은 메시지 ---------- */
 const MSG_KIND={call:{name:"부르기",cls:"k-call"},talk:{name:"상담",cls:"k-talk"},tell:{name:"알림",cls:"k-tell"}};
@@ -2382,14 +2514,327 @@ $("slEdit").addEventListener("click",()=>editLinks("studentLinks","우리 반 �
 
 let view="class";
 function setMode(v){
-  view=v; $("classView").hidden=v!=="class"; $("teacherView").hidden=v!=="teacher"; $("rewardView").hidden=v!=="reward";
-  $("vClass").setAttribute("aria-pressed",String(v==="class")); $("vTeacher").setAttribute("aria-pressed",String(v==="teacher")); $("vReward").setAttribute("aria-pressed",String(v==="reward"));
+  view=v; $("classView").hidden=v!=="class"; $("teacherView").hidden=v!=="teacher"; $("rewardView").hidden=v!=="reward"; $("routineView").hidden=v!=="routine";
+  $("vClass").setAttribute("aria-pressed",String(v==="class")); $("vTeacher").setAttribute("aria-pressed",String(v==="teacher")); $("vReward").setAttribute("aria-pressed",String(v==="reward")); $("vRoutine").setAttribute("aria-pressed",String(v==="routine"));
   if(v==="teacher") loadHistory();
   if(v==="reward") renderRewards();
+  if(v==="routine"){ if(viewKey!==ymd(new Date())) setView(new Date()); rtManual=0; renderRoutine(); }
 }
 $("vClass").addEventListener("click",()=>setMode("class"));
 $("vTeacher").addEventListener("click",()=>setMode("teacher"));
 $("vReward").addEventListener("click",()=>setMode("reward"));
+$("vRoutine").addEventListener("click",()=>setMode("routine"));
+
+/* ---------- 수업 루틴 ----------
+   수업 시간마다 도입 → 활동 1·2 → 함께 구조화 → 정리를 교실 TV와 아이들 패드에 띄워요.
+   · 선생님이 정하는 것(단원명·차시명·단원 질문, 함께 구조화 시작, 이 시간 끄기)은 days/날짜 의 rt 에
+   · 아이들 체크는 checks/날짜/rt/p교시/s번호/c 에, 선생님 공책 검사 확인은 같은 자리의 ok 에
+   아이마다 칸이 따로라서 여러 명이 한꺼번에 눌러도 서로 덮어쓰지 않아요. */
+const RT_STEPS=[
+  {tag:"도입",title:"배움공책 정리하기",voice:"조용히",items:["단원명 쓰기","차시명 쓰기","단원 질문 쓰기","내 질문 만들기"]},
+  {tag:"활동 1",title:"교과서 소리 내어 읽으며 답 쓰기",voice:"속삭이는 목소리로",items:["한 문장씩 소리 내어 읽기","개념이 나오면 동그라미 치기","뜻에 줄 치기","답 쓰기"]},
+  {tag:"활동 2",title:"교과서 질문에 답하기",voice:"조용히",items:["교과서 질문에 답 쓰기","다시 읽고 깊이 생각해 고치기"]},
+  {tag:"활동 3",title:"선생님과 함께 구조화하기",voice:"손 들고 말해요",items:["구조도를 배움공책에 그리기"],gate:true},
+  {tag:"정리",title:"오늘 배운 내용 정리하기",voice:"조용히",items:["배운 내용 내 말로 적기 (#개념)","내 삶과 연결점 쓰기","공책 검사 받기"],check:2}
+];
+const RT_OFF=RT_STEPS.map((s,i)=>RT_STEPS.slice(0,i).reduce((a,x)=>a+x.items.length,0));
+const RT_N=RT_STEPS.reduce((a,x)=>a+x.items.length,0);
+const RT_POS={0:"도입",1:"활동 1",2:"활동 2",3:"활동 3",4:"정리",extra:"다 했어요",wait:"검사 기다림",ok:"검사 끝",none:"아직"};
+const pk=n=>"p"+n;
+let rtManual=0, rtLast=null, rtSig="";
+function RTS(){ return Object.assign({},DEFAULTS.routine,S.routine||{}); }
+function kids(){ /* 수업 루틴·번호 고르기는 모든 번호 (이름 칸이 비어 있는 번호만 빼요) */
+  const n=Math.max(2,Math.min(40,+S.students||23)), named=!!(S.names||"").trim(), out=[];
+  for(let i=1;i<=n;i++) if(!named||nameOf(i)) out.push(i);
+  return out.length?out:roster();
+}
+function rtCfgOf(dd,n){ return (dd&&dd.rt&&dd.rt[pk(n)])||{}; }
+function rtCfg(n){ return rtCfgOf(D,n); }
+function rtRecOf(cc,n,no){ const r=cc&&cc.rt&&cc.rt[pk(n)]&&cc.rt[pk(n)]["s"+no]; return r||null; }
+function rtOnWith(p,dd){ const c=rtCfgOf(dd,p.n); if(c.mode==="on") return true; if(c.mode==="off") return false;
+  if(p.m) return false; const off=(RTS().offSubj||"").split(/[,\s·]+/).filter(Boolean).map(subjOf); return !off.includes(subjOf(p.s)); }
+function rtOn(p){ return rtOnWith(p,D); }
+function rtExtra(subj){ const r=RTS();
+  for(const line of (r.extra||"").split("\n")){ const k=line.indexOf("|"); if(k>0 && subjOf(line.slice(0,k).trim())===subj) return line.slice(k+1).trim(); }
+  return (r.extraAll||"").trim(); }
+/* 아이 한 명이 지금 어디쯤인지 */
+function rtCalc(cfg,rec){
+  const c=(rec&&rec.c)||"", ok=!!(rec&&rec.ok), ph=+((cfg&&cfg.phase)||0);
+  const has=i=>c.charAt(i)==="1";
+  const done=RT_STEPS.map((s,i)=>s.items.every((_,j)=>s.check===j||has(RT_OFF[i]+j)));
+  const open=[true,done[0],done[0]&&done[1],ph>=1,ph>=1&&done[3]];
+  let pos;
+  if(ok) pos="ok";
+  else if(ph>=1) pos=!done[3]?3:(!done[4]?4:"wait");
+  else { const i=[0,1,2].find(k=>!done[k]); pos=i===undefined?"extra":i; }
+  const n=c.split("").filter(x=>x==="1").length+(ok?1:0);
+  return {c:c,ok:ok,ph:ph,has:has,done:done,open:open,pos:pos,started:!!n,prog:Math.min(1,n/RT_N)};
+}
+function rtState(n,no){ return rtCalc(rtCfg(n),rtRecOf(C,n,no)); }
+function rtMin(now){ return now.getHours()*60+now.getMinutes()+now.getSeconds()/60; }
+/* 루틴 화면이 보여 줄 교시: 수업 중이거나 끝나고 10분 안이면 그 교시, 아니면 다음 교시 */
+function rtDefaultSel(now){
+  const ps=periodsToday(now); if(!ps.length) return 0; const m=rtMin(now);
+  const started=ps.filter(p=>toMin(p.start)<=m), last=started[started.length-1];
+  if(last && m<toMin(last.end)+10) return last.n;
+  const nx=ps.find(p=>toMin(p.start)>m); return (nx||last||ps[0]).n;
+}
+/* 자동으로 루틴 화면을 띄울 교시: 수업 중이거나 끝나고 3분 안 (공책 검사 마무리) */
+function rtActive(now){
+  if(!isSchoolDay(now)) return 0; const m=rtMin(now);
+  const p=periodsToday(now).find(q=>toMin(q.start)<=m && m<toMin(q.end)+3);
+  return p&&rtOn(p)?p.n:0;
+}
+function rtTick(now){
+  const a=rtActive(now);
+  if(a!==rtLast){
+    const was=rtLast; rtLast=a;
+    if(RTS().auto){
+      if(a && view==="class") setMode("routine");
+      else if(!a && was && view==="routine") setMode("class");
+    }
+    rtManual=0; rtSig=""; renderRoutine();
+  }
+  if(view==="routine" && now.getSeconds()===0) renderRoutine();
+}
+function rtSetCfg(n,patch){
+  D.rt=Object.assign({},D.rt); const c=Object.assign({},rtCfg(n),patch);
+  Object.keys(c).forEach(k=>{ if(c[k]==null||c[k]==="") delete c[k]; });
+  D.rt[pk(n)]=c; saveDay(); renderRoutine();
+}
+let rtWarned=false;
+function rtWrite(n,no,field,val){
+  const key=viewKey, P=pk(n), K="s"+no;
+  C=Object.assign({},C); C.rt=Object.assign({},C.rt); C.rt[P]=Object.assign({},C.rt[P]); C.rt[P][K]=Object.assign({},C.rt[P][K]);
+  if(val==null) delete C.rt[P][K][field]; else C.rt[P][K][field]=val;
+  lsSet("hd-chk-"+key,C); renderRoutine();
+  if(!DB) return;
+  const w=DB.kind==="파이어베이스" ? DB.doc("checks/"+key+"/rt/"+P+"/"+K+"/"+field).set(val==null?null:val) : DB.doc("checks/"+key).set(clone(C));
+  Promise.resolve(w).catch(()=>{ if(!rtWarned){ rtWarned=true; toast(STUDENT?"체크가 저장되지 않았어요. 선생님께 말해 줘":"저장하지 못했어요. 파이어베이스 규칙의 checks 자리를 확인해 주세요"); } });
+}
+function rtToggle(n,i){
+  const me=+lsGet("hd-me")||0; if(!me){ pickMe(); return; }
+  const arr=rtState(n,me).c.padEnd(RT_N,"0").split(""); arr[i]=arr[i]==="1"?"0":"1";
+  const c=arr.join("").replace(/0+$/,""); rtWrite(n,me,"c",c||null);
+}
+function rtEdit(p){
+  const c=rtCfg(p.n), sj=subjOf(p.s), last=(S.rtUnit||{})[sj]||"";
+  overlay((sh,close)=>{
+    sh.style.width="min(680px,100%)";
+    sh.appendChild(el("h3",null,p.n+"교시 "+(p.s||"")+" · 오늘 배울 내용"));
+    sh.appendChild(el("div",{style:"color:var(--muted);margin-bottom:12px"},"저장하면 교실 TV와 아이들 패드에 바로 떠요. 아이들은 이걸 보고 배움공책에 적어요."));
+    const mk=(lab,input,hint)=>{ const f=el("label",{class:"fld"}); f.append(el("span",null,lab),input); if(hint) f.appendChild(el("small",null,hint)); sh.appendChild(f); };
+    const u=el("input",{type:"text",id:"rtU",placeholder:"예) 4. 비례식과 비례배분",maxlength:"60"}); u.value=c.unit||last;
+    const l=el("input",{type:"text",id:"rtL",placeholder:"예) 비례식의 성질을 알아볼까요",maxlength:"80"}); l.value=c.lesson||"";
+    const q=el("textarea",{id:"rtQ",placeholder:"예) 두 비가 같다는 것은 무슨 뜻일까?",maxlength:"160"}); q.value=c.q||""; q.style.minHeight="4.5em";
+    mk("단원명",u,!c.unit&&last?"지난 "+sj+" 시간 단원명을 미리 넣어 두었어요":""); mk("차시명",l); mk("단원 질문",q);
+    const foot=el("div",{class:"foot"});
+    const cl=el("button",{class:"btn"},"지우기"); cl.addEventListener("click",()=>{ u.value=""; l.value=""; q.value=""; u.focus(); });
+    const ok=el("button",{class:"btn pri"},"저장하고 띄우기");
+    ok.addEventListener("click",()=>{ const unit=u.value.trim();
+      rtSetCfg(p.n,{unit:unit,lesson:l.value.trim(),q:q.value.trim()});
+      if(unit && sj){ S.rtUnit=Object.assign({},S.rtUnit||{}); S.rtUnit[sj]=unit; saveSettings(); }
+      close(); toast(p.n+"교시 내용을 띄웠어요"); });
+    foot.append(cl,ok); sh.appendChild(foot); setTimeout(()=>(c.unit||last?l:u).focus(),40);
+  },{cls:"tabsheet c-sky"});
+}
+function rtShift(d){
+  const now=new Date(), ps=periodsToday(now); if(!ps.length) return;
+  const cur=rtManual||rtDefaultSel(now); let i=ps.findIndex(p=>p.n===cur); if(i<0) i=0;
+  i=Math.max(0,Math.min(ps.length-1,i+d)); rtManual=ps[i].n; rtSig=""; renderRoutine();
+}
+function rtCard(cls,ico,title,tone){
+  const c=el("div",{class:"card tab "+cls}); if(tone) toneVars(c,tone,"c");
+  const h=el("div",{class:"head"}); const h2=el("h2"); const ic=el("span",{class:"ico","aria-hidden":"true"}); ic.innerHTML='<svg viewBox="0 0 24 24">'+ico+'</svg>';
+  h2.append(ic,document.createTextNode(title)); h.appendChild(h2); c.appendChild(h); return c;
+}
+const RT_ICO={
+  list:'<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>',
+  plus:'<circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/>',
+  kids:'<circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2A5 5 0 0 1 21 19"/>',
+  star:'<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>'
+};
+/* 오늘 수호천사인 아이 패드에 띄우는 띠 */
+function angelBanner(){
+  if(!STUDENT) return null; const me=+lsGet("hd-me")||0, now=new Date();
+  if(!me || !isSchoolDay(now) || viewKey!==ymd(now)) return null;
+  const ang=angelsFor(now), role=ang[0]===me?"A":(ang[1]===me?"B":null); if(!role) return null;
+  const t=tasks(role), ch=checksOf(role,t.length), done=t.filter((_,j)=>ch[j]).length;
+  const b=el("button",{class:"angel-me"+(t.length&&done===t.length?" done":""),type:"button"});
+  b.append(document.createTextNode(done===t.length&&t.length?"오늘 수호천사 할 일을 다 했어요! 고마워요":"오늘 나는 수호천사! 할 일을 눌러 체크해요"),el("b",null,done+" / "+t.length));
+  b.addEventListener("click",()=>openTasks(role,me)); return b;
+}
+function renderRoutine(){
+  if(view!=="routine") return;
+  const main=$("rtMain"), side=$("rtSide"), now=new Date(), m=rtMin(now), me=STUDENT?(+lsGet("hd-me")||0):0;
+  const ps=isSchoolDay(now)?periodsToday(now):[];
+  const sel=rtManual||rtDefaultSel(now), p=ps.find(q=>q.n===sel)||null;
+  main.innerHTML=""; side.innerHTML="";
+  main.className="card tab"; toneVars(main,p?toneOf(p.s):"sky","c");
+  if(!p){
+    main.appendChild(el("div",{class:"rt-big"},isSchoolDay(now)?"오늘은 수업이 다 끝났어요":"오늘은 수업이 없어요"));
+    main.appendChild(el("div",{class:"rt-blank"},"수업 시간이 되면 이 화면에 수업 루틴이 떠요."));
+    const ab=angelBanner(); if(ab) side.appendChild(ab); return;
+  }
+  const cfg=rtCfg(p.n), on=rtOn(p), s0=toMin(p.start), e0=toMin(p.end);
+  /* 머리: 교시·과목·시각·상태, 선생님 도구 */
+  const head=el("div",{class:"rt-head"});
+  const per=el("span",{class:"rt-per"}); per.append(el("b",null,p.n+"교시"),document.createTextNode(p.s||"(비어 있음)")); head.appendChild(per);
+  head.appendChild(el("span",{class:"rt-time"},p.start+"~"+p.end));
+  const live=m>=s0&&m<e0;
+  head.appendChild(el("span",{class:"rt-chip"+(live?" live":"")},live?("수업 중 · "+Math.ceil(e0-m)+"분 남았어요"):(m<s0?(Math.ceil(s0-m)<=10?Math.ceil(s0-m)+"분 뒤 시작":p.start+"에 시작"):"수업이 끝났어요")));
+  head.appendChild(el("span",{class:"rt-sp"}));
+  if(!STUDENT){
+    const tl=el("div",{class:"rt-tools"});
+    const pv=el("button",{class:"btn","aria-label":"앞 교시"},"‹"), nx=el("button",{class:"btn","aria-label":"다음 교시"},"›");
+    pv.addEventListener("click",()=>rtShift(-1)); nx.addEventListener("click",()=>rtShift(1));
+    tl.append(pv,nx);
+    if(on){ const ed=el("button",{class:"btn sun"},"내용 적기"); ed.addEventListener("click",()=>rtEdit(p)); tl.appendChild(ed); }
+    const tg=el("button",{class:"btn"},on?"이 시간 루틴 끄기":"이 시간도 루틴 쓰기");
+    tg.addEventListener("click",()=>rtSetCfg(p.n,{mode:on?"off":"on",phase:on?null:cfg.phase}));
+    tl.appendChild(tg); head.appendChild(tl);
+  }
+  main.appendChild(head);
+  if(!on){
+    main.appendChild(el("div",{class:"rt-big"},"이 시간은 수업 루틴을 쓰지 않아요"));
+    main.appendChild(el("div",{class:"rt-blank"},p.m?((p.loc||"다른 교실")+"에서 하는 이동 수업이에요."):(STUDENT?"선생님 안내를 들어요.":"루틴을 쓰려면 위의 '이 시간도 루틴 쓰기'를 눌러 주세요.")));
+    const ab=angelBanner(); if(ab) side.appendChild(ab); return;
+  }
+  /* 단원명·차시명·단원 질문 */
+  if(cfg.unit||cfg.lesson){
+    const u=el("div",{class:"rt-unit"}); u.appendChild(el("small",null,"오늘 배울 내용"));
+    if(cfg.unit) u.appendChild(document.createTextNode(cfg.unit));
+    if(cfg.unit&&cfg.lesson) u.appendChild(document.createTextNode(" · "));
+    if(cfg.lesson) u.appendChild(el("span",{class:"ls"},cfg.lesson));
+    main.appendChild(u);
+  }
+  if(cfg.q){ const q=el("div",{class:"rt-q"}); q.append(el("span",null,"단원 질문"),el("p",null,cfg.q)); main.appendChild(q); }
+  if(!cfg.unit&&!cfg.lesson&&!cfg.q) main.appendChild(el("div",{class:"rt-blank"},STUDENT?"선생님이 오늘 배울 단원명·차시명·단원 질문을 띄워 줄 거예요. 교과서를 펴고 기다려요.":"'내용 적기'를 눌러 단원명·차시명·단원 질문을 적으면 TV와 아이들 패드에 떠요."));
+  /* 학생: 내 상태 */
+  const canCheck=m>=s0-5;
+  let st=null;
+  if(STUDENT){
+    const box=el("div",{class:"rt-me"});
+    if(!me){ const b=el("button",{class:"btn pri"},"내 번호 고르기"); b.addEventListener("click",pickMe); box.append(el("span",{class:"who"},"번호를 골라 줘"),el("span",{class:"say"},"한 번 고르면 이 패드가 기억해요"),b); main.appendChild(box); }
+    else {
+      st=rtState(p.n,me);
+      const say=!canCheck?(p.n+"교시가 시작되면 체크할 수 있어요"):
+        st.pos==="ok"?"검사 끝! 쉬는 시간에 푹 쉬어요":st.pos==="wait"?"공책을 들고 선생님께 검사 받아요":
+        st.pos==="extra"?"활동 2까지 다 했어요! 오른쪽 '다 한 사람은'을 해요":
+        ("지금은 "+RT_STEPS[st.pos].tag+" · "+RT_STEPS[st.pos].title);
+      if(st.pos==="ok") box.classList.add("ok");
+      const bar=el("span",{class:"bar"}); const bi=el("i"); bi.style.width=Math.round(st.prog*100)+"%"; bar.appendChild(bi);
+      box.append(el("span",{class:"who"},me+"번 "+nameOf(me)),el("span",{class:"say"},say),el("span"),bar);
+      main.appendChild(box);
+    }
+  }
+  /* 교실 전체: 단계마다 몇 명 */
+  const list=kids(), cnt={0:0,1:0,2:0,3:0,4:0,extra:0,wait:0,ok:0}; const stOf={};
+  list.forEach(no=>{ const s=rtState(p.n,no); stOf[no]=s; cnt[s.pos]=(cnt[s.pos]||0)+1; });
+  let hot=-1; if(!STUDENT){ let best=0; [0,1,2,3,4].forEach(i=>{ if(cnt[i]>best){ best=cnt[i]; hot=i; } }); }
+  /* 단계 */
+  const ol=el("ol",{class:"rt-steps"});
+  RT_STEPS.forEach((s,i)=>{
+    const li=el("li",{class:"rt-step"});
+    const isNow=STUDENT?(st&&st.pos===i):(i===hot);
+    if(isNow) li.classList.add("now");
+    if(STUDENT&&st){ if(st.done[i]&&!isNow) li.classList.add("past"); if(!st.open[i]) li.classList.add("locked"); }
+    li.appendChild(el("span",{class:"tg"},s.tag));
+    const bd=el("div",{class:"bd"}); bd.append(el("span",{class:"tt"},s.title),el("span",{class:"vc"},s.voice)); li.appendChild(bd);
+    if(!STUDENT){ const c=cnt[i]||0; li.appendChild(el("span",{class:"rt-cnt"+(c?"":" zero")},c?"지금 "+c+"명":"0명")); }
+    else li.appendChild(el("span"));
+    if(STUDENT&&me&&st){
+      if(!st.open[i]){
+        bd.appendChild(el("div",{class:"rt-msg"},s.gate?"선생님이 열면 다 같이 해요":(i===4?"활동 3을 마치면 열려요":"앞 단계를 다 하면 열려요")));
+      } else {
+        const g=el("div",{class:"its do"});
+        s.items.forEach((t,j)=>{ const idx=RT_OFF[i]+j;
+          if(s.check===j){ const b=el("button",{class:"rt-ck tch",type:"button",disabled:"","aria-pressed":String(st.ok)}); const tx=el("span"); tx.append(t,el("small",null,st.ok?"선생님이 확인했어요":"선생님이 확인하면 체크돼요")); b.append(el("i",null,"✓"),tx); g.appendChild(b); return; }
+          const b=el("button",{class:"rt-ck",type:"button","aria-pressed":String(st.has(idx))}); b.append(el("i",null,"✓"),el("span",null,t));
+          if(!canCheck) b.disabled=true; else b.addEventListener("click",()=>rtToggle(p.n,idx));
+          g.appendChild(b); });
+        bd.appendChild(g);
+      }
+    } else {
+      const g=el("div",{class:"its"}); s.items.forEach(t=>g.appendChild(el("span",{class:"it"},t))); bd.appendChild(g);
+      if(!STUDENT&&s.gate){ const gt=el("div",{class:"rt-gate"});
+        const ph=+(cfg.phase||0); const b=el("button",{class:"btn "+(ph?"":"sun")},ph?"다시 각자 하기로":"함께 구조화 시작");
+        b.addEventListener("click",()=>rtSetCfg(p.n,{phase:ph?null:1})); gt.appendChild(b);
+        gt.appendChild(el("span",{class:"rt-msg"},ph?"아이들 패드에 활동 3과 정리가 열렸어요":"누르면 모든 아이 패드에 활동 3이 열려요"));
+        bd.appendChild(gt); }
+    }
+    ol.appendChild(li);
+  });
+  main.appendChild(ol);
+  /* 옆 칸 */
+  const ab=angelBanner(); if(ab) side.appendChild(ab);
+  const ex=rtExtra(subjOf(p.s));
+  if(ex){ const c=rtCard("rt-extra",RT_ICO.plus,"다 한 사람은","leaf"); c.appendChild(el("p",null,ex)); side.appendChild(c); }
+  if(STUDENT){
+    const c=rtCard("",RT_ICO.list,"내 기록","grape");
+    c.appendChild(el("p",{class:"note",style:"margin:0 0 10px"},"이번 주에 수업 루틴을 어디까지 했는지 볼 수 있어요."));
+    const b=el("button",{class:"btn pri"},"이번 주 내 기록 보기"); b.addEventListener("click",openMyWeek); c.appendChild(b);
+    const ch=el("button",{class:"btn",style:"margin-top:8px"},"번호가 틀렸어요"); ch.addEventListener("click",pickMe); c.appendChild(ch);
+    side.appendChild(c);
+  } else {
+    const c=rtCard("",RT_ICO.kids,"우리 반 진행",p?toneOf(p.s):"sky");
+    const sum=el("div",{class:"rt-sum"}); sum.append(document.createTextNode("검사 끝 "+cnt.ok+" / "+list.length+"명"),el("small",null,"검사 기다림 "+cnt.wait+"명")); c.appendChild(sum);
+    const bars=el("div",{class:"rt-bars"});
+    [[0,"도입"],[1,"활동 1"],[2,"활동 2"],["extra","다 했어요"],[3,"활동 3"],[4,"정리"],["wait","검사 기다림"],["ok","검사 끝"]].forEach(([k,lab])=>{
+      if(k==="extra"&&+(cfg.phase||0)>=1&&!cnt.extra) return;
+      const r=el("div",{class:"rt-bar"+(k==="ok"?" okb":"")}); const tr=el("span",{class:"tr"}); const ti=el("i"); ti.style.width=(list.length?cnt[k]/list.length*100:0)+"%"; tr.appendChild(ti);
+      r.append(el("span",null,lab),tr,el("b",null,cnt[k]+"명")); bars.appendChild(r); });
+    c.appendChild(bars);
+    const names=!!lsGet("hd-rt-names");
+    const op=el("label",{class:"rt-opt"}); const cb=el("input",{type:"checkbox",id:"rtNames"}); cb.checked=names;
+    cb.addEventListener("change",()=>{ lsSet("hd-rt-names",cb.checked); renderRoutine(); });
+    op.append(cb,el("span",null,"이 기기에서 이름 보기 (선생님 태블릿용 · 교실 TV는 끄기)")); c.appendChild(op);
+    if(names){
+      c.appendChild(el("p",{class:"note",style:"margin:8px 0 0"},"공책을 검사했으면 그 아이를 눌러 '검사 끝'으로 바꿔요. 한 번 더 누르면 취소돼요."));
+      const g=el("div",{class:"rt-kids"});
+      list.forEach(no=>{ const s=stOf[no]; const k=s.pos==="ok"?"ok":(s.pos==="wait"?"wait":(!s.started&&s.ph<1?"none":String(s.pos)));
+        const t=el("button",{class:"rt-kid s-"+k,type:"button",title:no+"번 공책 검사 "+(s.ok?"취소":"확인")});
+        t.append(el("b",null,no+" "+(nameOf(no)||"")),el("span",null,s.ok?"검사 끝 ✓":(k==="none"?RT_POS.none:RT_POS[s.pos])));
+        t.addEventListener("click",()=>rtWrite(p.n,no,"ok",s.ok?null:true)); g.appendChild(t); });
+      c.appendChild(g);
+    }
+    side.appendChild(c);
+  }
+}
+/* 학생: 이번 주 내 기록 */
+function onceDoc(path){
+  return new Promise(res=>{
+    if(!DB){ res(null); return; } let u=null, done=false;
+    const fin=v=>{ if(done) return; done=true; setTimeout(()=>{ try{ u&&u(); }catch(e){} },0); res(v); };
+    try{ u=DB.doc(path).onSnapshot(s=>fin(s.exists?s.data():null),()=>fin(null)); }catch(e){ fin(null); }
+    setTimeout(()=>fin(null),6000);
+  });
+}
+function openMyWeek(){
+  const me=+lsGet("hd-me")||0; if(!me){ pickMe(); return; }
+  overlay((sh,close)=>{
+    sh.style.width="min(780px,100%)";
+    sh.appendChild(el("h3",null,"이번 주 내 수업 루틴"));
+    sh.appendChild(el("div",{style:"color:var(--muted);margin-bottom:12px"},me+"번 "+(nameOf(me)||"")+" · 초록색은 선생님이 공책 검사를 확인한 시간이에요"));
+    const box=el("div",{class:"rt-week"}); box.appendChild(el("p",{class:"note",style:"margin:0"},"불러오는 중…")); sh.appendChild(box);
+    const c=el("button",{class:"btn pri",style:"margin-top:14px"},"닫기"); c.addEventListener("click",close); sh.appendChild(c);
+    (async()=>{
+      const t0=ymd(new Date()), mon=parseYmd(mondayKey(new Date())), rows=[];
+      for(let i=0;i<5;i++){ const d=addDays(mon,i), k=ymd(d); if(k>t0) break; if(!isSchoolDay(d)) continue;
+        const isT=k===viewKey; const dd=isT?D:((await onceDoc("days/"+k))||lsGet("hd-day-"+k)||{}); const cc=isT?C:((await onceDoc("checks/"+k))||lsGet("hd-chk-"+k)||{});
+        const keep=D; let ps=[]; try{ D=dd; ps=periodsFor(d); } finally { D=keep; }
+        const nowM=rtMin(new Date());
+        rows.push({d:d,items:ps.filter(p=>rtOnWith(p,dd) && !(k===t0 && toMin(p.start)>nowM)).map(p=>({p:p,s:rtCalc(rtCfgOf(dd,p.n),rtRecOf(cc,p.n,me))}))}); }
+      box.innerHTML="";
+      if(!rows.length){ box.appendChild(el("p",{class:"note",style:"margin:0"},"이번 주에는 아직 기록이 없어요.")); return; }
+      rows.forEach(r=>{ const w=el("div",{class:"rt-wd"}); w.appendChild(el("b",null,korDate(r.d))); const ul=el("ul");
+        if(!r.items.length) ul.appendChild(el("li",null,"루틴을 쓴 수업이 없어요"));
+        r.items.forEach(x=>{ const s=x.s; const lab=s.ok?"검사 끝 ✓":(s.pos==="wait"?"정리까지 함":(s.started?(RT_POS[s.pos]+"까지"):"기록 없음"));
+          ul.appendChild(el("li",{class:s.ok?"ok":(s.pos==="wait"?"end":"")},x.p.n+"교시 "+x.p.s+" · "+lab)); });
+        w.appendChild(ul); box.appendChild(w); });
+    })();
+  },{cls:"tabsheet c-grape"});
+}
 async function loadHistory(){
   const box=$("hist"); box.innerHTML=""; box.appendChild(el("p",{class:"note"},"불러오는 중…"));
   let days=[]; try{ days=await listDays(); }catch(e){ box.innerHTML=""; box.appendChild(el("p",{class:"note"},"기록을 불러오지 못했어요. 잠시 뒤 다시 눌러 주세요.")); return; }
@@ -2639,7 +3084,7 @@ function lockScreen(){
 }
 
 /* ---------- 시작 ---------- */
-const cached=lsGet("hd-settings"); if(cached) S=merge(clone(DEFAULTS),cached);
+const cached=lsGet("hd-settings"); if(cached) S=merge(clone(DEFAULTS),cached); if(migrate()) lsSet("hd-settings",S);
 if(STUDENT){ ["morning","notice","info"].forEach(id=>{ $(id).readOnly=true; $(id).placeholder="아직 적힌 내용이 없어요"; }); setMode("class"); }
 renderHeader(); applyFold(); renderStu(); renderBellBtn();
 setView(new Date()); lockScreen();
