@@ -2712,7 +2712,18 @@ function renderRoutine(){
   if(view!=="routine") return;
   const a=document.activeElement, fm=(a&&a.classList&&a.classList.contains("rt-memo-ta"))?a:null, ss=fm?[fm.selectionStart,fm.selectionEnd,fm.scrollTop]:null;
   renderRoutine0();
+  rtMathLink();
   if(fm && document.body.contains(fm) && document.activeElement!==fm){ fm.focus(); try{ fm.setSelectionRange(ss[0],ss[1]); fm.scrollTop=ss[2]; }catch(e){} }
+}
+/* 수학 시간이면 수업 화면 오른쪽 맨 위에 똑똑!수학탐험대 바로가기를 띄워요 (TV에서는 누르면 QR, 아이 패드에서는 바로 열림) */
+function rtMathLink(){
+  const side=$("rtSide"); if(!side) return; const now=new Date();
+  const ps=isSchoolDay(now)?periodsToday(now):[]; const sel=rtManual||rtDefaultSel(now), p=ps.find(q=>q.n===sel);
+  if(!p || subjOf(p.s)!=="수학") return;
+  const c=rtCard("rt-math",RT_ICO.star,"똑똑!수학탐험대","sky");
+  c.appendChild(el("p",{class:"note",style:"margin:0 0 10px"},STUDENT?"진도에 맞춰 탐험대를 하는 친구는 여기를 눌러 들어가요.":"수학 시간마다 저절로 떠요. 누르면 QR이 나와요."));
+  const w=el("div",{class:"links"}); w.appendChild(linkBtn({name:"똑똑!수학탐험대 열기",url:"https://www.toctocmath.kr/"})); c.appendChild(w);
+  side.insertBefore(c,side.firstChild);
 }
 function renderRoutine0(){
   const main=$("rtMain"), side=$("rtSide"), now=new Date(), m=rtMin(now), me=STUDENT?(+lsGet("hd-me")||0):0;
