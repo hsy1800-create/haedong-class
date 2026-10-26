@@ -153,6 +153,10 @@ input,textarea,select{font:inherit;color:inherit}
 .notice{flex:1}
 .pad{flex:1;width:100%;resize:none;border:0;background:transparent;font-size:1.35em;line-height:1.6;padding:0;min-height:6em}
 .pad:focus{outline:none}
+body:not(.student) .pad:focus{outline:3px solid color-mix(in srgb,var(--sea) 55%,transparent);outline-offset:4px;border-radius:6px;background-color:color-mix(in srgb,var(--panel) 80%,#FFF4C2)}
+.hd-r .padok{display:none;background:var(--sea)!important;color:#fff!important;border-color:var(--sea)!important}
+.card:focus-within .hd-r .padok{display:inline-flex}
+.student .hd-r .padok,.card.folded .hd-r .padok{display:none!important}
 .pad::placeholder{color:var(--muted);opacity:.55}
 .notice .pad{background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(1.6em - 1px),var(--line) calc(1.6em - 1px),var(--line) 1.6em);background-attachment:local;font-size:var(--nsz,1.8em)}
 .timechip{font-family:var(--f-body);font-size:.6em;background:var(--sea-soft);color:var(--sea);padding:2px 8px;border-radius:999px;font-weight:700}
@@ -680,6 +684,14 @@ body.rs-row{cursor:row-resize;user-select:none}
 @media (min-width:1100px){.rtv{grid-template-columns:minmax(0,2.15fr) minmax(290px,1fr);align-items:stretch}.rtv>.card,.rt-side{min-height:0;overflow:auto}}
 .rt-side{display:flex;flex-direction:column;gap:12px;min-width:0}
 .rt-side>.card{flex:0 0 auto}
+.rt-memo-w{display:flex;flex-direction:column;gap:8px;min-height:0}
+.rt-memo-w.big{flex:1 1 auto;margin-top:14px}
+.rt-memo-ta{width:100%;resize:vertical;border:2px dashed var(--line);border-radius:12px;background:var(--panel);color:var(--ink);font:inherit;line-height:1.6;padding:12px 14px;min-height:8em}
+.rt-memo-w.big .rt-memo-ta{flex:1 1 auto;min-height:55vh;resize:none}
+.rt-memo-ta:focus{outline:none;border-style:solid;border-color:var(--sea);background:color-mix(in srgb,var(--panel) 80%,#FFF4C2)}
+.student .rt-memo-ta{border-style:solid;cursor:default}
+.rt-memo-ft{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:14px}
+.rt-memo-ft .btn{padding:4px 10px;margin-left:4px}
 .rt-head{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap}
 .rt-per{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:var(--fw-d);font-size:1.65em;line-height:1.1}
 .rt-per b{background:var(--c);color:var(--con);border-radius:.4em;padding:.06em .45em;font-weight:inherit}
@@ -806,23 +818,23 @@ body.rs-row{cursor:row-resize;user-select:none}
         <div class="now-bar" id="nowBarW" hidden><i id="nowBar"></i></div>
       </div>
       <div class="card tab c-sun morning" id="cMorning">
-        <div class="head"><h2><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 18.5h17M7 18.5a5 5 0 0 1 10 0M12 5.5v3M5.4 10.4l2 1.5M18.6 10.4l-2 1.5"/></svg></span>아침활동 <span class="timechip" id="mTime">08:30~08:50</span></h2><div class="hd-r"><button class="fold tonly" id="gPick">글감 고르기</button><button class="fold" id="gBig" hidden>화면에 띄우기</button><button class="fold" id="bMorning">크게 보기</button><button class="fold" id="fMorning">접기</button></div></div>
+        <div class="head"><h2><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 18.5h17M7 18.5a5 5 0 0 1 10 0M12 5.5v3M5.4 10.4l2 1.5M18.6 10.4l-2 1.5"/></svg></span>아침활동 <span class="timechip" id="mTime">08:30~08:50</span></h2><div class="hd-r"><button type="button" class="fold padok">다 적었어요</button><button class="fold tonly" id="gPick">글감 고르기</button><button class="fold" id="gBig" hidden>화면에 띄우기</button><button class="fold" id="bMorning">크게 보기</button><button class="fold" id="fMorning">접기</button></div></div>
         <div class="peek" id="pMorning"></div>
         <div class="gam" id="gam" hidden></div>
-        <textarea class="pad" id="morning" placeholder="오늘 아침활동을 적어 주세요. 글감을 고르면 위에 글감이 떠요."></textarea>
+        <textarea class="pad" id="morning" placeholder="여기에 바로 적으면 저장돼요. 글감을 고르면 위에 글감이 떠요."></textarea>
         <div class="empty" id="eMorning" hidden></div>
       </div>
       <div class="card tab c-leaf notice" id="cNotice">
         <div class="head"><h2><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/></svg></span>알림장 <span class="tag" id="nDate"></span></h2>
-          <div class="hd-r"><span class="fsz"><button id="fsDown" aria-label="글씨 작게">가−</button><button id="fsUp" aria-label="글씨 크게">가+</button></span><button class="fold" id="bNotice">크게 보기</button><button class="fold" id="fNotice">접기</button></div></div>
+          <div class="hd-r"><button type="button" class="fold padok">다 적었어요</button><span class="fsz"><button id="fsDown" aria-label="글씨 작게">가−</button><button id="fsUp" aria-label="글씨 크게">가+</button></span><button class="fold" id="bNotice">크게 보기</button><button class="fold" id="fNotice">접기</button></div></div>
         <div class="peek" id="pNotice"></div>
-        <textarea class="pad" id="notice" placeholder="1. 수학 익힘책 54~55쪽&#10;2. 내일 체육복 입고 오기"></textarea>
+        <textarea class="pad" id="notice" placeholder="여기에 바로 적으면 저장돼요.&#10;예) 1. 수학 익힘책 54~55쪽"></textarea>
         <div class="empty" id="eNotice" hidden></div>
       </div>
       <div class="card tab c-grape info" id="cInfo">
-        <div class="head"><h2><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 10v4h3.5l7 4.5v-13L7.5 10z"/><path d="M17.5 9.5a3.5 3.5 0 0 1 0 5"/></svg></span>안내사항 <span class="tag">지울 때까지 계속 보여요</span></h2><div class="hd-r"><span class="fsz"><button id="isDown" aria-label="안내사항 글씨 작게">가−</button><button id="isUp" aria-label="안내사항 글씨 크게">가+</button></span><button class="fold" id="bInfo">크게 보기</button><button class="fold" id="fInfo">접기</button></div></div>
+        <div class="head"><h2><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 10v4h3.5l7 4.5v-13L7.5 10z"/><path d="M17.5 9.5a3.5 3.5 0 0 1 0 5"/></svg></span>안내사항 <span class="tag">지울 때까지 계속 보여요</span></h2><div class="hd-r"><button type="button" class="fold padok">다 적었어요</button><span class="fsz"><button id="isDown" aria-label="안내사항 글씨 작게">가−</button><button id="isUp" aria-label="안내사항 글씨 크게">가+</button></span><button class="fold" id="bInfo">크게 보기</button><button class="fold" id="fInfo">접기</button></div></div>
         <div class="peek" id="pInfo"></div>
-        <textarea class="pad" id="info" placeholder="예) 10월 9일(금) 한글날 · 쉬는 날&#10;예) 가정통신문 회신은 금요일까지"></textarea>
+        <textarea class="pad" id="info" placeholder="여기에 바로 적으면 저장돼요.&#10;예) 가정통신문 회신은 금요일까지"></textarea>
         <div class="empty" id="eInfo" hidden></div>
       </div>
     </section>
@@ -1268,7 +1280,7 @@ function renderHeader(){
   $("className").textContent=S.className||"우리 반";
   $("classSub").textContent=S.classSub||"";
   $("mTime").textContent=S.morning.start+"~"+S.morning.end;
-  const lb=S.lessonBoard||{}; const lbA=$("btnLesson"); lbA.hidden=!okUrl(lb.url); if(okUrl(lb.url)){ lbA.href=lb.url; lbA.title=(lb.name||"수업판")+" 열기 (새 탭)"; }
+  const lb=S.lessonBoard||{}; const lbA=$("btnLesson"); lbA.hidden=true; if(false){ lbA.href=lb.url; lbA.title=(lb.name||"수업판")+" 열기 (새 탭)"; }
   document.documentElement.style.setProperty("--nsz",(+S.noticeSize||1.8)+"em");
   document.documentElement.style.setProperty("--isz",(+S.infoSize||1.8)+"em");
   applyTheme();
@@ -2585,7 +2597,8 @@ function rtDefaultSel(now){
 function rtActive(now){
   if(!isSchoolDay(now)) return 0; const m=rtMin(now);
   const p=periodsToday(now).find(q=>toMin(q.start)<=m && m<toMin(q.end)+3);
-  return p&&rtOn(p)?p.n:0;
+  if(!p) return 0; const c=rtCfg(p.n);
+  return (rtOn(p)||c.mode==="off"||(c.memo||"").trim())?p.n:0;   /* 루틴을 끄고 메모로 쓰는 시간도 수업 화면을 띄워요 */
 }
 function rtTick(now){
   const a=rtActive(now);
@@ -2645,6 +2658,32 @@ function rtShift(d){
   const cur=rtManual||rtDefaultSel(now); let i=ps.findIndex(p=>p.n===cur); if(i<0) i=0;
   i=Math.max(0,Math.min(ps.length-1,i+d)); rtManual=ps[i].n; rtSig=""; renderRoutine();
 }
+/* 수업 메모: 루틴 없이 메모장처럼 적는 칸 (교시마다 따로 저장, 아이들 패드에는 읽기만) */
+const RT_MEMO={};
+function rtMemo(p,big){
+  const key=viewKey+"|"+p.n+"|"+(big?"b":"s");
+  let w=RT_MEMO[key];
+  if(!w){
+    w=el("div",{class:"rt-memo-w"+(big?" big":"")});
+    const ta=el("textarea",{class:"rt-memo-ta",placeholder:STUDENT?"아직 적힌 메모가 없어요":"여기에 수업 내용을 메모장처럼 적어요. 적는 대로 저장되고 아이들 패드에도 떠요."});
+    if(STUDENT) ta.readOnly=true;
+    let tm=null;
+    ta.addEventListener("input",()=>{
+      D.rt=Object.assign({},D.rt); const c=Object.assign({},rtCfg(p.n)); const v=ta.value;
+      if(v.trim()) c.memo=v; else delete c.memo; D.rt[pk(p.n)]=c;
+      clearTimeout(tm); tm=setTimeout(saveDay,500); });
+    w.appendChild(ta);
+    if(!STUDENT){ const ft=el("div",{class:"rt-memo-ft"}); ft.appendChild(el("span",null,"적는 대로 저절로 저장돼요"));
+      const sz=el("span"); const dn=el("button",{class:"btn",type:"button"},"가−"), up=el("button",{class:"btn",type:"button"},"가+");
+      const setSz=d=>{ S.rtMemoSize=Math.max(0.8,Math.min(3,Math.round(((+S.rtMemoSize||1.4)+d)*10)/10)); saveSettings(); document.querySelectorAll(".rt-memo-ta").forEach(t=>t.style.fontSize=S.rtMemoSize+"em"); };
+      dn.addEventListener("click",()=>setSz(-0.2)); up.addEventListener("click",()=>setSz(0.2)); sz.append(dn,up); ft.appendChild(sz); w.appendChild(ft); }
+    RT_MEMO[key]=w;
+  }
+  const ta=w.querySelector("textarea"); const v=rtCfg(p.n).memo||"";
+  if(document.activeElement!==ta && ta.value!==v) ta.value=v;
+  ta.style.fontSize=(+S.rtMemoSize||(big?1.4:1.1))+"em";
+  return w;
+}
 function rtCard(cls,ico,title,tone){
   const c=el("div",{class:"card tab "+cls}); if(tone) toneVars(c,tone,"c");
   const h=el("div",{class:"head"}); const h2=el("h2"); const ic=el("span",{class:"ico","aria-hidden":"true"}); ic.innerHTML='<svg viewBox="0 0 24 24">'+ico+'</svg>';
@@ -2668,6 +2707,11 @@ function angelBanner(){
 }
 function renderRoutine(){
   if(view!=="routine") return;
+  const a=document.activeElement, fm=(a&&a.classList&&a.classList.contains("rt-memo-ta"))?a:null, ss=fm?[fm.selectionStart,fm.selectionEnd,fm.scrollTop]:null;
+  renderRoutine0();
+  if(fm && document.body.contains(fm) && document.activeElement!==fm){ fm.focus(); try{ fm.setSelectionRange(ss[0],ss[1]); fm.scrollTop=ss[2]; }catch(e){} }
+}
+function renderRoutine0(){
   const main=$("rtMain"), side=$("rtSide"), now=new Date(), m=rtMin(now), me=STUDENT?(+lsGet("hd-me")||0):0;
   const ps=isSchoolDay(now)?periodsToday(now):[];
   const sel=rtManual||rtDefaultSel(now), p=ps.find(q=>q.n===sel)||null;
@@ -2692,14 +2736,14 @@ function renderRoutine(){
     pv.addEventListener("click",()=>rtShift(-1)); nx.addEventListener("click",()=>rtShift(1));
     tl.append(pv,nx);
     if(on){ const ed=el("button",{class:"btn sun"},"내용 적기"); ed.addEventListener("click",()=>rtEdit(p)); tl.appendChild(ed); }
-    const tg=el("button",{class:"btn"},on?"이 시간 루틴 끄기":"이 시간도 루틴 쓰기");
+    const tg=el("button",{class:"btn"},on?"루틴 없이 메모만 쓰기":"이 시간도 루틴 쓰기");
     tg.addEventListener("click",()=>rtSetCfg(p.n,{mode:on?"off":"on",phase:on?null:cfg.phase}));
     tl.appendChild(tg); head.appendChild(tl);
   }
   main.appendChild(head);
   if(!on){
-    main.appendChild(el("div",{class:"rt-big"},"이 시간은 수업 루틴을 쓰지 않아요"));
-    main.appendChild(el("div",{class:"rt-blank"},p.m?((p.loc||"다른 교실")+"에서 하는 이동 수업이에요."):(STUDENT?"선생님 안내를 들어요.":"루틴을 쓰려면 위의 '이 시간도 루틴 쓰기'를 눌러 주세요.")));
+    if(p.m) main.appendChild(el("div",{class:"rt-blank"},(p.loc||"다른 교실")+"에서 하는 이동 수업이에요."));
+    main.appendChild(rtMemo(p,true));
     const ab=angelBanner(); if(ab) side.appendChild(ab); return;
   }
   /* 단원명·차시명·단원 질문 */
@@ -2772,6 +2816,7 @@ function renderRoutine(){
   const ab=angelBanner(); if(ab) side.appendChild(ab);
   const ex=rtExtra(subjOf(p.s));
   if(ex){ const c=rtCard("rt-extra",RT_ICO.plus,"다 한 사람은","leaf"); c.appendChild(el("p",null,ex)); side.appendChild(c); }
+  if(STUDENT && (rtCfg(p.n).memo||"").trim()){ const mc=rtCard("rt-memo",RT_ICO.list,"메모",toneOf(p.s)); mc.appendChild(rtMemo(p,false)); side.appendChild(mc); }
   if(STUDENT){
     const c=rtCard("",RT_ICO.list,"내 기록","grape");
     c.appendChild(el("p",{class:"note",style:"margin:0 0 10px"},"이번 주에 수업 루틴을 어디까지 했는지 볼 수 있어요."));
@@ -2779,27 +2824,28 @@ function renderRoutine(){
     const ch=el("button",{class:"btn",style:"margin-top:8px"},"번호가 틀렸어요"); ch.addEventListener("click",pickMe); c.appendChild(ch);
     side.appendChild(c);
   } else {
-    const c=rtCard("",RT_ICO.kids,"우리 반 진행",p?toneOf(p.s):"sky");
-    const sum=el("div",{class:"rt-sum"}); sum.append(document.createTextNode("검사 끝 "+cnt.ok+" / "+list.length+"명"),el("small",null,"검사 기다림 "+cnt.wait+"명")); c.appendChild(sum);
-    const bars=el("div",{class:"rt-bars"});
-    [[0,"도입"],[1,"활동 1"],[2,"활동 2"],["extra","다 했어요"],[3,"활동 3"],[4,"정리"],["wait","검사 기다림"],["ok","검사 끝"]].forEach(([k,lab])=>{
-      if(k==="extra"&&+(cfg.phase||0)>=1&&!cnt.extra) return;
-      const r=el("div",{class:"rt-bar"+(k==="ok"?" okb":"")}); const tr=el("span",{class:"tr"}); const ti=el("i"); ti.style.width=(list.length?cnt[k]/list.length*100:0)+"%"; tr.appendChild(ti);
-      r.append(el("span",null,lab),tr,el("b",null,cnt[k]+"명")); bars.appendChild(r); });
-    c.appendChild(bars);
-    const names=!!lsGet("hd-rt-names");
-    const op=el("label",{class:"rt-opt"}); const cb=el("input",{type:"checkbox",id:"rtNames"}); cb.checked=names;
-    cb.addEventListener("change",()=>{ lsSet("hd-rt-names",cb.checked); renderRoutine(); });
-    op.append(cb,el("span",null,"이 기기에서 이름 보기 (선생님 태블릿용 · 교실 TV는 끄기)")); c.appendChild(op);
-    if(names){
-      c.appendChild(el("p",{class:"note",style:"margin:8px 0 0"},"공책을 검사했으면 그 아이를 눌러 '검사 끝'으로 바꿔요. 한 번 더 누르면 취소돼요."));
+    const c=rtCard("rt-memo",RT_ICO.list,"메모",p?toneOf(p.s):"sky"); c.appendChild(rtMemo(p,false));
+    side.appendChild(c);
+    /* 공책 검사: 선생님 태블릿에서만 아이 이름을 눌러 '검사 끝'으로 바꿔요 (교실 TV에는 버튼 하나만) */
+    const k=rtCard("rt-check",RT_ICO.kids,"공책 검사",p?toneOf(p.s):"sky");
+    const tab=!!lsGet("hd-rt-names");
+    if(!tab){
+      k.appendChild(el("p",{class:"note",style:"margin:0 0 10px"},"검사 기다림 "+cnt.wait+"명 · 검사 끝 "+cnt.ok+"명"));
+      const on1=el("button",{class:"btn"},"이 기기에서 검사하기 (선생님 태블릿)"); on1.addEventListener("click",()=>{ lsSet("hd-rt-names",true); renderRoutine(); }); k.appendChild(on1);
+    } else {
+      const sum=el("div",{class:"rt-sum"}); sum.append(document.createTextNode("검사 끝 "+cnt.ok+" / "+list.length+"명"),el("small",null,"검사 기다림 "+cnt.wait+"명")); k.appendChild(sum);
+      k.appendChild(el("p",{class:"note",style:"margin:4px 0 8px"},"공책을 검사했으면 그 아이를 눌러요. 한 번 더 누르면 취소돼요."));
       const g=el("div",{class:"rt-kids"});
-      list.forEach(no=>{ const s=stOf[no]; const k=s.pos==="ok"?"ok":(s.pos==="wait"?"wait":(!s.started&&s.ph<1?"none":String(s.pos)));
-        const t=el("button",{class:"rt-kid s-"+k,type:"button",title:no+"번 공책 검사 "+(s.ok?"취소":"확인")});
-        t.append(el("b",null,no+" "+(nameOf(no)||"")),el("span",null,s.ok?"검사 끝 ✓":(k==="none"?RT_POS.none:RT_POS[s.pos])));
+      const order=list.slice().sort((a,b)=>{ const w=x=>stOf[x].pos==="wait"?0:(stOf[x].ok?2:1); return w(a)-w(b)||a-b; });
+      order.forEach(no=>{ const s=stOf[no]; const kk=s.pos==="ok"?"ok":(s.pos==="wait"?"wait":(!s.started&&s.ph<1?"none":String(s.pos)));
+        const t=el("button",{class:"rt-kid s-"+kk,type:"button",title:no+"번 공책 검사 "+(s.ok?"취소":"확인")});
+        t.append(el("b",null,no+" "+(nameOf(no)||"")),el("span",null,s.ok?"검사 끝 ✓":(kk==="none"?RT_POS.none:RT_POS[s.pos])));
         t.addEventListener("click",()=>rtWrite(p.n,no,"ok",s.ok?null:true)); g.appendChild(t); });
-      c.appendChild(g);
+      k.appendChild(g);
+      const off=el("button",{class:"btn",style:"margin-top:10px"},"이 기기에서 검사 그만 (교실 TV)"); off.addEventListener("click",()=>{ lsSet("hd-rt-names",false); renderRoutine(); }); k.appendChild(off);
     }
+    side.appendChild(k);
+    return;
     side.appendChild(c);
   }
 }
@@ -3087,6 +3133,7 @@ function lockScreen(){
 
 /* ---------- 시작 ---------- */
 const cached=lsGet("hd-settings"); if(cached) S=merge(clone(DEFAULTS),cached); if(migrate()) lsSet("hd-settings",S);
+document.querySelectorAll(".padok").forEach(b=>b.addEventListener("pointerdown",e=>{ e.preventDefault(); const a=document.activeElement; if(a&&a.blur) a.blur(); if(typeof toast==="function") toast("저장했어요"); }));
 if(STUDENT){ ["morning","notice","info"].forEach(id=>{ $(id).readOnly=true; $(id).placeholder="아직 적힌 내용이 없어요"; }); setMode("class"); }
 renderHeader(); applyFold(); renderStu(); renderBellBtn();
 setView(new Date()); lockScreen();
