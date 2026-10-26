@@ -324,7 +324,9 @@ table.bell input{width:6.5em}
 .gbig .gam .gp{font-size:clamp(18px,1.6vw,26px)}
 .gbig .gam .gf{font-size:clamp(16px,1.4vw,24px);margin-top:10px}
 .gtip .gam ol>li>div:first-child{font-weight:800}
-.col>.card.morning.hasPrompt:not(.folded){min-height:min(470px,52vh)}
+.card.folded .gam{display:none!important}
+#cNotice:not(.folded),#cInfo:not(.folded){min-height:150px}
+.morning.hasPrompt:not(.folded){min-height:200px}
 .gbig .gleft{text-align:right;color:var(--muted);font-size:clamp(18px,1.6vw,26px);margin-top:14px}
 #gBig{background:var(--sea);color:#fff;border-color:var(--sea)}
 .gbig .gam .gt{font-size:clamp(34px,4vw,64px)}
