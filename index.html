@@ -638,6 +638,53 @@ button.kid:hover{border-color:var(--c)}
 .kp b{font-family:var(--f-display);font-weight:var(--fw-d);font-size:1.5em;line-height:1}
 .kp span{font-size:.78em;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;min-height:1.2em}
 .kp[aria-pressed="false"]{border-color:var(--line);background:var(--bg);opacity:.5;text-decoration:line-through}
+/* ===== 용사 (캐릭터 · 상점 · 친구 장터) ===== */
+canvas.hero{image-rendering:pixelated;image-rendering:crisp-edges;display:block}
+.kids.heroes{grid-template-columns:repeat(auto-fill,minmax(11em,1fr));gap:16px 12px;padding-top:12px}
+.kids.heroes .kid{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"hr nm" "hr tp" "bar bar";padding-left:8px}
+.kids.heroes .kid .no{position:absolute;left:-7px;top:-9px;width:auto;min-width:1.75em;height:1.75em;padding:0 .3em;font-size:1em;border:2px solid var(--panel);z-index:1}
+.kid .hr{grid-area:hr;width:3.6em;height:3.6em;margin:-2px 0 -4px}
+.coin{display:inline-flex;align-items:center;gap:4px;font-weight:800;color:var(--k-sun-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.coin::before{content:"";width:.85em;height:.85em;border-radius:50%;background:var(--k-sun);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--k-sun-ink) 40%,transparent);flex:none}
+.kid .coin{font-size:.85em}
+.sheet.hsheet{width:min(1100px,100%);height:min(780px,calc(100vh - 32px));display:grid;grid-template-columns:minmax(230px,290px) minmax(0,1fr);gap:20px;padding:18px 20px;overflow:hidden}
+.hs-side{display:flex;flex-direction:column;gap:6px;min-height:0;overflow:auto}
+.hs-side h3{margin:4px 0 0;font-size:1.5em}
+.hs-stage{background:color-mix(in srgb,var(--k-sun) 12%,var(--bg));border:1px solid var(--line);border-radius:16px;display:grid;place-items:center;padding:14px 0 18px}
+.hs-stage{position:relative}
+.hs-stage canvas{width:176px;height:176px}
+.hs-try{position:absolute;top:8px;left:8px;font-size:.75em;font-weight:800;border-radius:999px;padding:2px 10px;background:var(--k-sun);color:var(--k-sun-on)}
+.hs-money{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;color:var(--muted);font-weight:600}
+.hs-money .coin{font-size:1.7em}
+.hs-main{display:flex;flex-direction:column;gap:10px;min-height:0}
+.hs-main h3{margin:0}
+.hs-grid{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;align-content:start;padding:8px 4px 4px}
+.hi{--rc:var(--line);position:relative;border:2px solid var(--rc);background:var(--panel);border-radius:12px;padding:6px 4px 5px;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;color:var(--ink)}
+.hi canvas{width:56px;height:56px}
+.hi small{font-size:.74em;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi .coin{font-size:.85em}
+.hi.on{background:color-mix(in srgb,var(--k-sun) 20%,var(--panel));box-shadow:0 0 0 3px var(--k-sun)}
+.hi.poor{opacity:.5}
+.hi .tag{position:absolute;top:-9px;right:-6px;font-size:.66em;font-weight:800;border-radius:999px;padding:1px 8px;background:var(--k-berry);color:var(--k-on)}
+.rar1{--rc:var(--k-slate)}.rar2{--rc:var(--k-leaf)}.rar3{--rc:var(--k-sky)}.rar4{--rc:var(--k-grape)}.rar5{--rc:var(--k-sun)}
+.hs-ask{border:2px solid var(--k-sun);border-radius:14px;padding:10px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:color-mix(in srgb,var(--k-sun) 10%,var(--panel))}
+.hs-ask canvas{width:48px;height:48px}
+.hs-ask input{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.hs-log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.hs-log li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;font-size:.88em}
+.hs-log canvas{width:32px;height:32px}
+.mk{display:flex;flex-direction:column;gap:8px;overflow:auto;min-height:0}
+.mk .m{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:10px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:6px 10px;background:var(--panel);color:var(--ink);text-align:left}
+.mk .m canvas{width:44px;height:44px}
+.mk .w{font-size:.8em;color:var(--muted)}
+#market .m{grid-template-columns:auto minmax(0,1fr) auto;padding:4px 8px;gap:8px}
+#market .m canvas{width:32px;height:32px}
+#market .who{font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.me-hero{display:flex;align-items:center;gap:12px;margin-top:10px}
+.me-hero canvas{width:64px;height:64px}
+.me-hero .coin{font-size:1.3em}
+.hero-rules{font:12px/1.5 ui-monospace,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;white-space:pre;overflow:auto;margin:6px 0}
+@media (max-width:760px){.sheet.hsheet{grid-template-columns:1fr;height:auto;max-height:calc(100vh - 32px);overflow:auto}.hs-grid{max-height:50vh}}
 .award .big2{display:flex;gap:10px;justify-content:center;margin:16px 0}
 .award .big2 .btn{font-size:1.3em;padding:10px 26px}
 /* 학생 패드: 내 온도 */
@@ -918,7 +965,7 @@ body.rs-row{cursor:row-resize;user-select:none}
       <div class="therm-wrap" id="classTherm"></div>
     </div>
     <div class="card tab c-tang" id="cKids">
-      <div class="head"><h2><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2A5 5 0 0 1 21 19"/></svg></span>온도판 <span class="tag">지적 없이 성실히 참여한 수업마다 1도씩 올라가요</span></h2>
+      <div class="head"><h2><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2A5 5 0 0 1 21 19"/></svg></span>온도판 <span class="tag" id="rTag">지적 없이 성실히 참여한 수업마다 1도씩 올라가요</span></h2>
         <div class="hd-r tonly"><button class="fold" id="rUndo">방금 것 되돌리기</button><button class="btn pri" id="rAward" style="padding:4px 14px">이번 시간 온도 올리기</button></div></div>
       <div class="kids" id="kids"></div>
     </div>
@@ -927,6 +974,8 @@ body.rs-row{cursor:row-resize;user-select:none}
       <ol class="tops" id="tops"></ol>
       <div class="rsub">보상 받을 친구 <span id="rGoalNote"></span></div>
       <div class="readys" id="ready"></div>
+      <div class="rsub" id="mkHead" hidden>친구 장터 <span id="mkNote"></span></div>
+      <div class="mk" id="market" hidden></div>
     </div>
   </main>
 
@@ -944,6 +993,7 @@ body.rs-row{cursor:row-resize;user-select:none}
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="hero-items.js"></script>
 <script>
 /* 학급 서버(파이어베이스)에 올릴 때만 아래 null 자리에 설정값을 붙여 넣어요 */
 window.FIREBASE_CONFIG = {
@@ -1220,7 +1270,7 @@ function startStore(store){
     if(snap.metadata.hasPendingWrites || timerS || busyS) return;
     if(snap.exists){ S=merge(clone(DEFAULTS), clone(snap.data())); const a=document.activeElement; if(a&&a.id==="info") S.info=a.value; const mg=migrate(); lsSet("hd-settings",S); renderAll(); if(mg) saveSettings(); }
   }, ()=>{});
-  subscribeDay(); subscribeChecks(); subscribeLive(); subscribeR(); subscribeInbox(); if(view==="teacher") loadHistory();
+  subscribeDay(); subscribeChecks(); subscribeLive(); subscribeR(); subscribeHero(); subscribeInbox(); if(view==="teacher") loadHistory();
 }
 async function connect(tries){
   if(window.FIREBASE_CONFIG){
@@ -1806,11 +1856,20 @@ function openSettings(){
         body.appendChild(g);
         const c=el("label",{class:"fld",style:"flex-direction:row;gap:8px;align-items:center"}); const au=el("input",{type:"checkbox",id:"rwA"}); au.checked=rw.auto!==false;
         c.append(au,el("span",null,"수업이 끝나면 '온도 올리기' 창 띄우기 (선생님 화면·교실 TV)")); body.appendChild(c);
+        const sg=el("div",{class:"grid2"}); sg.append(fld("전담 과목",inp("rwSpS",rw.spSubj),"이 과목 수업이 끝나면 온도를 더 올려요. 쉼표로 나눠 적어요. 예) 체육, 영어"), fld("전담 수업 온도 (도)",inp("rwSpP",rw.spPts,"number"),"보통 수업은 1도씩 올라가요.")); body.appendChild(sg);
+        body.appendChild(el("div",{class:"rsub",style:"margin:16px 0 6px"},"용사 상점"));
+        const hc=el("label",{class:"fld",style:"flex-direction:row;gap:8px;align-items:center"}); const hon=el("input",{type:"checkbox",id:"rwShop"}); hon.checked=rw.shop!==false;
+        hc.append(hon,el("span",null,"보상판에 용사 캐릭터를 보여 주고, 온도(1도 = 1코인)로 아이템을 사고팔기")); body.appendChild(hc);
+        const pg=el("div",{class:"grid2"}), pr=Array.isArray(rw.prices)&&rw.prices.length===5?rw.prices:RW_DEF.prices;
+        ["일반","고급","희귀","영웅","전설"].forEach((nm,i)=>pg.appendChild(fld(nm+" 아이템 값 (코인)",inp("rwPr"+i,pr[i],"number")))); body.appendChild(pg);
+        body.appendChild(el("p",{class:"note"},"아이들 패드에서 사고팔려면 파이어베이스 규칙에 상점 자리가 있어야 해요. 파이어베이스 콘솔 › Realtime Database › 규칙에서 \"classboard\" 안, \"checks\" 옆에 아래 내용을 붙여 넣고 게시해 주세요."));
+        body.appendChild(el("pre",{class:"hero-rules"},HERO_RULES));
+        const cp=el("button",{class:"btn",style:"margin:0 8px 12px 0"},"규칙 복사하기"); cp.addEventListener("click",()=>{ if(navigator.clipboard) navigator.clipboard.writeText(HERO_RULES).then(()=>toast("복사했어요"),()=>toast("복사하지 못했어요. 직접 골라 복사해 주세요")); }); body.appendChild(cp);
         const rs=el("button",{class:"btn",style:"margin-top:6px"},"온도 모두 0도로 되돌리기"); let ask=false;
         rs.addEventListener("click",()=>{ if(!ask){ ask=true; rs.textContent="정말 모두 0도로 할까요? 한 번 더 누르면 지워요"; rs.style.borderColor="var(--alert)"; rs.style.color="var(--alert)"; return; }
-          R={temps:{},claimed:{},given:{},log:[]}; saveR(); ask=false; rs.textContent="온도 모두 0도로 되돌리기"; rs.style.borderColor=""; rs.style.color=""; toast("모든 온도를 0도로 되돌렸어요"); });
+          R={temps:{},claimed:{},given:{},log:[]}; saveR(); if(heroOn()) addHeroEvent({k:"reset"}).catch(()=>{}); ask=false; rs.textContent="온도 모두 0도로 되돌리기"; rs.style.borderColor=""; rs.style.color=""; toast("모든 온도를 0도로 되돌렸어요"); });
         body.appendChild(rs);
-        body.appendChild(el("p",{class:"note"},"학기가 바뀌거나 보상을 새로 시작할 때 써요. 되돌린 뒤에는 다시 살릴 수 없어요."));
+        body.appendChild(el("p",{class:"note"},"학기가 바뀌거나 보상을 새로 시작할 때 써요. 용사 코인도 0부터 다시 모으고, 산 아이템은 그대로 남아요. 되돌린 뒤에는 다시 살릴 수 없어요."));
       }
       if(cur==="alarm"){
         const lead=el("select",{id:"aLead"}); [1,2,3,4,5,7,10].forEach(n=>{ const o=el("option",{value:n},"수업 시작 "+n+"분 전"); if(+T.alarm.lead===n) o.selected=true; lead.appendChild(o); });
@@ -1843,7 +1902,7 @@ function openSettings(){
       }
       if(cur==="routine"){ T.routine={auto:document.getElementById("rtA").checked,extra:(v("rtX")||"").trim(),extraAll:(v("rtXA")||"").trim(),offSubj:(v("rtOffS")||"").trim()}; }
       if(cur==="angel"){ T.rot={date:v("rD")||T.rot.date,no:Math.max(1,+v("rN")||1)}; T.roleA=v("roleA"); T.roleB=v("roleB"); T.tasksA=v("tA"); T.tasksB=v("tB"); T.holidays=v("hol"); }
-      if(cur==="reward"){ T.reward={goal:Math.max(1,+v("rwG")||30),prize:(v("rwP")||"").trim()||"칭찬 쿠폰",classGoal:Math.max(1,+v("rwCG")||700),classPrize:(v("rwCP")||"").trim()||"반 파티",auto:document.getElementById("rwA").checked}; }
+      if(cur==="reward"){ T.reward={goal:Math.max(1,+v("rwG")||30),prize:(v("rwP")||"").trim()||"칭찬 쿠폰",classGoal:Math.max(1,+v("rwCG")||700),classPrize:(v("rwCP")||"").trim()||"반 파티",auto:document.getElementById("rwA").checked,shop:document.getElementById("rwShop").checked,prices:[0,1,2,3,4].map(i=>Math.max(1,Math.floor(+v("rwPr"+i)||RW_DEF.prices[i]))),spSubj:(v("rwSpS")||"").trim(),spPts:Math.max(1,Math.floor(+v("rwSpP")||1))}; }
       if(cur==="alarm"){ T.alarm={lead:+v("aLead")||3,all:document.getElementById("aAll").checked,sound:document.getElementById("aSnd").checked}; }
     }
     draw();
@@ -2201,7 +2260,7 @@ COLS().forEach(c=>sizeMO.observe(c,{childList:true}));
 /* ---------- 온도 보상판 ----------
    지적 없이 성실히 참여한 수업마다 1도씩 올라가요. 개인 목표 온도마다 개인 보상,
    모두의 온도를 더한 값이 반 목표에 닿으면 반 보상. 저장은 rewards/main 한 곳이고 선생님 화면만 고쳐요. */
-const RW_DEF={goal:30,prize:"칭찬 쿠폰",classGoal:700,classPrize:"반 파티",auto:true};
+const RW_DEF={goal:30,prize:"칭찬 쿠폰",classGoal:700,classPrize:"반 파티",auto:true,shop:true,prices:[3,6,10,15,25],spSubj:"체육, 영어",spPts:5};
 function RW(){ return Object.assign({},RW_DEF,S.reward||{}); }
 function normR(x){ x=x||{}; const o={temps:{},claimed:{},given:{},log:[]};
   ["temps","claimed","given"].forEach(k=>{ const v=x[k]; if(v&&typeof v==="object") for(const kk in v){ if(v[kk]!=null) o[k][kk]=v[kk]; } });
@@ -2237,17 +2296,18 @@ function openAward(p){
   const ex=new Set();
   overlay((sh,close)=>{
     awardSheet=sh;
-    sh.appendChild(el("h3",null,p.n+"교시 "+(p.s||"")+" 끝! 온도 올리기"));
-    sh.appendChild(el("div",{style:"color:var(--muted)"},"지적받은 친구만 눌러서 빼 주세요. 나머지 친구는 모두 1도 올라가요."));
+    const pts=lessonPts(p);
+    sh.appendChild(el("h3",null,p.n+"교시 "+(p.s||"")+" 끝! 온도 올리기"+(pts>1?" (전담 +"+pts+"도)":"")));
+    sh.appendChild(el("div",{style:"color:var(--muted)"},"지적받은 친구만 눌러서 빼 주세요. 나머지 친구는 모두 "+pts+"도 올라가요."));
     const grid=el("div",{class:"kpick"}); sh.appendChild(grid);
-    const go=el("button",{class:"btn pri"}); const upd=()=>{ go.textContent=(roster().length-ex.size)+"명 +1도 올리기"; };
+    const go=el("button",{class:"btn pri"}); const upd=()=>{ go.textContent=(roster().length-ex.size)+"명 +"+pts+"도 올리기"; };
     roster().forEach(n=>{ const b=el("button",{class:"kp",type:"button","aria-pressed":"true","aria-label":n+"번 "+nameOf(n)});
       b.append(el("b",null,String(n)),el("span",null,nameOf(n)||" "));
       b.addEventListener("click",()=>{ if(ex.has(n)) ex.delete(n); else ex.add(n); b.setAttribute("aria-pressed",String(!ex.has(n))); upd(); }); grid.appendChild(b); });
     upd();
     const foot=el("div",{class:"big2"}); const skip=el("button",{class:"btn"},"이번엔 건너뛰기");
     skip.addEventListener("click",()=>{ R.given[key]=true; saveR(); close(); });
-    go.addEventListener("click",()=>{ const n=roster().length-ex.size; addEntry({at:Date.now(),key:key,label:p.n+"교시 "+(p.s||""),d:1,ex:[...ex]}); close(); toast(n+"명 온도가 1도 올랐어요"); });
+    go.addEventListener("click",()=>{ const n=roster().length-ex.size; addEntry({at:Date.now(),key:key,label:p.n+"교시 "+(p.s||""),d:pts,ex:[...ex]}); close(); toast(n+"명 온도가 "+pts+"도 올랐어요"); });
     foot.append(skip,go); sh.appendChild(foot);
   },{cls:"award"});
 }
@@ -2266,6 +2326,8 @@ function openKid(n){
     const row=el("div",{class:"big2"}); const mi=el("button",{class:"btn"},"−1도"), pl=el("button",{class:"btn pri"},"+1도"); row.append(mi,pl); sh.appendChild(row);
     const rd=el("div"); sh.appendChild(rd);
     const draw=()=>{ t.innerHTML=""; t.append(document.createTextNode(tempOf(n)),el("small",null,"도")); rd.innerHTML="";
+      if(heroOn()){ const hr=el("div",{class:"me-hero",style:"justify-content:center;margin:4px 0 10px"}); hr.append(heroCanvas(lookOf(n)),coinEl(Math.max(0,coinsOf(n))));
+        const hb=el("button",{class:"btn"},"용사 · 사고판 기록"); hb.addEventListener("click",()=>{ close(); openHero(n); }); hr.appendChild(hb); rd.appendChild(hr); }
       const left=earned(n)-claimedOf(n);
       if(left>0){ const b=el("button",{class:"btn sun"},RW().prize+" 줬어요 (남은 보상 "+left+"개)"); b.addEventListener("click",()=>{ R.claimed[tKey(n)]=claimedOf(n)+1; saveR(); draw(); toast(n+"번에게 보상을 줬어요"); }); rd.appendChild(b); } };
     mi.addEventListener("click",()=>{ if(!tempOf(n)) return; addEntry({at:Date.now(),label:n+"번",d:-1,only:[n]}); draw(); });
@@ -2289,19 +2351,21 @@ function drawTherm(box,sum,cfg){
 }
 function renderRewards(){
   const box=$("kids"); if(!box) return;
-  const cfg=RW(), list=roster(), me=+lsGet("hd-me")||0, g=cfg.goal;
+  const cfg=RW(), list=roster(), me=+lsGet("hd-me")||0, g=cfg.goal, hero=heroOn();
+  box.classList.toggle("heroes",hero);
   const sum=list.reduce((a,n)=>a+tempOf(n),0);
   drawTherm($("classTherm"),sum,cfg);
   const ranked=list.filter(n=>tempOf(n)>0).sort((a,b)=>tempOf(b)-tempOf(a)||a-b);
   const top3=new Set(ranked.slice(0,3));
   box.innerHTML="";
   list.forEach(n=>{ const t=tempOf(n), prog=g>0?(t%g)/g:0, e=earned(n), ready=e>claimedOf(n);
-    const tile=el(STUDENT?"div":"button",{class:"kid"+(ready?" ready":"")+(n===me?" me":"")+(top3.has(n)?" top":"")});
+    const tile=el(STUDENT&&!hero?"div":"button",{class:"kid"+(ready?" ready":"")+(n===me?" me":"")+(top3.has(n)?" top":"")});
     if(!STUDENT){ tile.type="button"; tile.title=n+"번 온도 고치기"; tile.addEventListener("click",()=>openKid(n)); }
+    else if(hero){ tile.type="button"; tile.title=n===me?"내 용사 꾸미기":n+"번 용사 구경하기"; tile.addEventListener("click",()=>openHero(n)); }
     tile.style.setProperty("--h",heat(prog));
-    const tp=el("span",{class:"tp"}); tp.append(el("b",null,t+"도")); if(e) tp.appendChild(el("span",{class:"stars","aria-label":"보상 "+e+"번"},"★".repeat(Math.min(e,4))+(e>4?"×"+e:"")));
+    const tp=el("span",{class:"tp"}); tp.append(el("b",null,t+"도")); if(e) tp.appendChild(el("span",{class:"stars","aria-label":"보상 "+e+"번"},"★".repeat(Math.min(e,4))+(e>4?"×"+e:""))); if(hero) tp.appendChild(coinEl(Math.max(0,coinsOf(n))));
     const bar=el("span",{class:"bar"}); const bi=el("i"); bi.style.width=Math.round(prog*100)+"%"; bar.appendChild(bi);
-    tile.append(el("span",{class:"no"},String(n)),el("span",{class:"nm"},nameOf(n)||n+"번"),tp,bar); box.appendChild(tile); });
+    tile.append(el("span",{class:"no"},String(n)),el("span",{class:"nm"},nameOf(n)||n+"번"),tp,bar); if(hero) tile.appendChild(heroCanvas(lookOf(n),"hr")); box.appendChild(tile); });
   const ol=$("tops"); ol.innerHTML="";
   ranked.slice(0,5).forEach((n,i)=>{ const li=el("li"); li.append(el("span",{class:"rk"},String(i+1)),el("span",{class:"who"},n+"번 "+nameOf(n)),el("span",{class:"t"},tempOf(n)+"도")); ol.appendChild(li); });
   if(!ranked.length) ol.appendChild(el("li",{class:"note",style:"margin:0;background:none"},"아직 온도가 오른 친구가 없어요"));
@@ -2311,8 +2375,211 @@ function renderRewards(){
     if(!STUDENT){ const b=el("button",{class:"mini"},"줬어요"); b.addEventListener("click",()=>{ R.claimed[tKey(n)]=claimedOf(n)+1; saveR(); toast(n+"번에게 보상을 줬어요"); }); r.appendChild(b); }
     rd.appendChild(r); });
   if(!rs.length) rd.appendChild(el("p",{class:"note",style:"margin:0"},"아직 없어요. "+g+"도에 먼저 닿는 친구는 누굴까요?"));
+  const tg=$("rTag"); if(tg){ const sp=String(cfg.spSubj||"").trim(), pts=Math.floor(+cfg.spPts||1);
+    tg.textContent="지적 없이 성실히 참여한 수업마다 1도씩"+(sp&&pts>1?", 전담("+sp.split(/[,\s·]+/).filter(Boolean).join("·")+") 수업은 "+pts+"도씩":"")+" 올라가요"+(hero?" · 1도는 1코인":""); }
+  renderMarketBoard();
   renderMe();
 }
+/* ---------- 용사 상점: 캐릭터 · 상점 · 친구 장터 ----------
+   코인 = 온도 + 장터에서 판 코인 − 쓴 코인. 아이템을 사도 온도와 개인·반 보상은 줄지 않아요.
+   계산 규칙은 hero-items.js(window.HERO)에 있어요.
+   저장: shop/log(사고판 기록, 한 줄씩 쌓기만 해요)와 shop/looks/s번호(입은 모습). 아이들 패드도 여기에 써요. */
+const HERO=window.HERO||null;
+const HERO_TABS=["weapon","shield","hat","top","legs","feet","hair","beard","body"];
+const HERO_SHOP_TABS=["weapon","shield","hat","top","legs","feet"];
+const HERO_BODY=new Set(["legs","feet","top","hair","beard","hat"]);
+function heroOn(){ return !!HERO && RW().shop!==false; }
+function heroPrices(){ const p=RW().prices; return Array.isArray(p)&&p.length===5?p:HERO.PRICES; }
+function normHS(x){ x=x||{}; return { log:(x.log&&typeof x.log==="object")?x.log:{}, looks:(x.looks&&typeof x.looks==="object")?x.looks:{} }; }
+let HS=normHS(lsGet("hd-hero")), HST=null, heroRedraw=null, unsubH=null, myEarned=null;
+function hst(){ if(!HST) HST=HERO.replay(HS.log); return HST; }
+function lookOf(no){ return HERO.sanitizeLook(HS.looks["s"+no]||HERO.defaultLook(no), hst().own[no], no); }
+function coinsOf(no){ return HERO.coins(hst(), no, tempOf(no)); }
+function heroChanged(){
+  HST=null; lsSet("hd-hero",HS);
+  const me=+lsGet("hd-me")||0;
+  if(STUDENT && me && HERO){ const e=hst().earned[me]||0; if(myEarned!=null && e>myEarned) toast("장터에 올린 물건이 팔렸어요! +"+(e-myEarned)+"코인"); myEarned=e; }
+  renderRewards(); renderMe(); if(heroRedraw) heroRedraw();
+}
+function subscribeHero(){
+  if(unsubH){ unsubH(); unsubH=null; }
+  if(!DB||!HERO) return;
+  unsubH=DB.doc("shop").onSnapshot(snap=>{ HS=normHS(snap.exists?snap.data():{}); heroChanged(); },()=>{});
+}
+function heroFail(e){ const m=String(e&&(e.code||e.message)||"");
+  toast(/PERMISSION|permission/i.test(m)?(STUDENT?"상점이 아직 잠겨 있어요. 선생님께 말해 줘":"파이어베이스 규칙에 상점 자리를 더해 주세요 (설정 › 보상판)"):"저장하지 못했어요. 다시 해 볼래요?"); }
+/* 기록 한 줄 쌓기: 화면에는 바로 보이고, 저장이 막히면 되돌려요 */
+function addHeroEvent(ev){
+  const k=HERO.newKey(); ev=Object.assign({at:Date.now()},ev);
+  HS.log[k]=ev; heroChanged();
+  if(!DB) return Promise.resolve(k);
+  const w=DB.kind==="파이어베이스"?DB.doc("shop/log/"+k).set(ev):DB.doc("shop").set(clone(HS));
+  return Promise.resolve(w).then(()=>k,e=>{ delete HS.log[k]; heroChanged(); heroFail(e); throw e; });
+}
+function saveLook(no,look){
+  HS.looks["s"+no]=look; heroChanged();
+  if(!DB) return;
+  const w=DB.kind==="파이어베이스"?DB.doc("shop/looks/s"+no).set(look):DB.doc("shop").set(clone(HS));
+  Promise.resolve(w).catch(heroFail);
+}
+/* 을/를 */
+function eul(w){ const c=(w||"").trim().slice(-1), code=c.charCodeAt(0);
+  const jong=code>=0xAC00&&code<=0xD7A3?(code-0xAC00)%28>0:"013678".includes(c);
+  return w+(jong?"을":"를"); }
+/* 그림 */
+const heroImg=new Image(); let heroReady=false;
+if(HERO){ heroImg.onload=()=>{ heroReady=true; renderRewards(); renderMe(); if(heroRedraw) heroRedraw(); }; heroImg.src="hero-sprites.png"; }
+function heroBlit(ctx,it,alpha){ if(!heroReady||!it) return; const r=HERO.sheetRect(it); ctx.globalAlpha=alpha==null?1:alpha; ctx.drawImage(heroImg,r.sx,r.sy,16,16,0,0,16,16); ctx.globalAlpha=1; }
+function heroCanvas(look,cls){
+  const cv=el("canvas",{width:16,height:16,class:"hero"+(cls?" "+cls:""),"aria-hidden":"true"}); const ctx=cv.getContext("2d"); ctx.imageSmoothingEnabled=false;
+  HERO.CATS.forEach(c=>heroBlit(ctx,HERO.byId(look[c.id]))); return cv; }
+function itemCanvas(it,bodyId){
+  const cv=el("canvas",{width:16,height:16,class:"hero","aria-hidden":"true"}); const ctx=cv.getContext("2d"); ctx.imageSmoothingEnabled=false;
+  if(it&&HERO_BODY.has(it.cat)) heroBlit(ctx,HERO.byId(bodyId||"1_1"),.25);
+  heroBlit(ctx,it); return cv; }
+function coinEl(n,cls){ return el("span",{class:"coin"+(cls?" "+cls:"")},String(n)); }
+/* 사기 · 팔기 · 장터 */
+async function heroBuy(no,id){
+  const why=HERO.whyNotBuy(hst(),no,id,tempOf(no),heroPrices()); if(why){ toast(why); return false; }
+  const it=HERO.byId(id);
+  try{ await addHeroEvent({k:"buy",s:no,i:id,p:HERO.priceOf(it,heroPrices())}); }catch(e){ return false; }
+  const lk=Object.assign({},lookOf(no)); lk[it.cat]=id; saveLook(no,lk);
+  toast(eul(it.name)+" 샀어요!"); return true;
+}
+async function heroSell(no,id,price){
+  const why=HERO.whyNotSell(hst(),no,id,price,heroPrices()); if(why){ toast(why); return false; }
+  try{ await addHeroEvent({k:"sell",s:no,i:id,p:Math.floor(+price)}); }catch(e){ return false; }
+  toast("장터에 올렸어요. 친구가 사면 코인이 들어와요"); return true;
+}
+async function heroTrade(no,key){
+  const why=HERO.whyNotTrade(hst(),no,key,tempOf(no)); if(why){ toast(why); return false; }
+  const L=hst().listings[key], it=HERO.byId(L.item);
+  let k; try{ k=await addHeroEvent({k:"trade",s:no,l:key}); }catch(e){ return false; }
+  if(!hst().applied[k]){ toast("한발 늦었어요. 다른 친구가 먼저 샀어요"); return false; }
+  const lk=Object.assign({},lookOf(no)); lk[it.cat]=it.id; saveLook(no,lk);
+  toast(L.seller+"번에게서 "+eul(it.name)+" 샀어요!"); return true;
+}
+function heroCancel(no,key){ const L=hst().listings[key]; if(!L) return;
+  addHeroEvent(L.seller===no?{k:"cancel",s:no,l:key}:{k:"void",ref:key}).then(()=>toast("장터에서 내렸어요"),()=>{}); }
+function heroVoid(ref){ addHeroEvent({k:"void",ref:ref}).then(()=>toast("되돌렸어요"),()=>{}); }
+function heroListings(){ const L=hst().listings; return Object.keys(L).map(k=>L[k]).sort((a,b)=>(b.at||0)-(a.at||0)); }
+function who(no){ return no+"번"+(nameOf(no)?" "+nameOf(no):""); }
+/* 용사 창: 내 용사(꾸미기·상점·장터) / 친구 용사 구경 / 선생님(기록·되돌리기) */
+function openHero(no,tab){
+  if(!heroOn()) return;
+  const me=+lsGet("hd-me")||0;
+  if(STUDENT && !me){ pickMe(); return; }
+  const mine=!STUDENT||no===me, actor=STUDENT?me:no;
+  let mode=mine?(tab||"closet"):"visit", cat="weapon", ask=null;
+  overlay((sh,close)=>{
+    const side=el("div",{class:"hs-side"}), main=el("div",{class:"hs-main"}); sh.append(side,main);
+    const draw=()=>{
+      if(!document.body.contains(sh)){ if(heroRedraw===draw) heroRedraw=null; return; }
+      const st=hst(), look=lookOf(no), money=coinsOf(no), pr=heroPrices();
+      side.innerHTML=""; main.innerHTML="";
+      /* 왼쪽: 캐릭터와 코인 */
+      const tryIt=mode==="shop"&&ask&&ask.t==="buy"?HERO.byId(ask.id):null;
+      const stage=el("div",{class:"hs-stage"}); stage.appendChild(heroCanvas(tryIt?Object.assign({},look,{[tryIt.cat]:tryIt.id}):look));
+      if(tryIt) stage.appendChild(el("span",{class:"hs-try"},"입어 보는 중")); side.appendChild(stage);
+      side.appendChild(el("h3",null,who(no)));
+      const mo=el("div",{class:"hs-money"}); mo.append(coinEl(money<0?0:money),el("span",null,"코인 · 온도 "+tempOf(no)+"도")); side.appendChild(mo);
+      if(money<0) side.appendChild(el("p",{class:"note",style:"margin:0"},"온도가 내려가서 코인이 "+(-money)+" 모자라요."));
+      const owned=[...(st.own[no]||[])].length; side.appendChild(el("div",{class:"note",style:"margin:0"},"모은 아이템 "+owned+"개"));
+      if(!STUDENT){
+        side.appendChild(el("div",{class:"rsub",style:"margin:10px 0 4px"},"사고판 기록"));
+        const ul=el("ul",{class:"hs-log"}); const hist=(st.history[no]||[]).slice().reverse();
+        hist.forEach(h=>{ const it=HERO.byId(h.item); const li=el("li");
+          const what=h.k==="buy"?"상점에서 삼":h.k==="sell"?"장터에 올림":h.k==="cancel"?"장터에서 내림":h.role==="buyer"?h.other+"번에게서 삼":h.other+"번에게 팖";
+          const amt=h.k==="buy"||(h.k==="trade"&&h.role==="buyer")?"−"+h.price:h.k==="trade"?"+"+h.price:h.price+"코인";
+          li.append(itemCanvas(it,look.body),el("span",null,(it?it.name:"?")+" · "+what+" ("+amt+")"));
+          if(h.k!=="cancel"&&(h.k!=="sell"||st.listings[h.key])){ const b=el("button",{class:"mini"},h.k==="sell"?"내리기":"되돌리기"); b.addEventListener("click",()=>heroVoid(h.key)); li.appendChild(b); } else li.appendChild(el("span"));
+          ul.appendChild(li); });
+        if(!hist.length) ul.appendChild(el("li",{class:"note",style:"display:block"},"아직 사고판 것이 없어요"));
+        side.appendChild(ul);
+        side.appendChild(el("p",{class:"note"},"되돌리면 쓴 코인이 돌아오고 아이템은 원래 주인에게 가요."));
+      }
+      const done=el("button",{class:"btn pri",style:"margin-top:auto"},"닫기"); done.addEventListener("click",close); side.appendChild(done);
+      /* 오른쪽 */
+      if(mode==="visit"){
+        main.appendChild(el("h3",null,who(no)+"의 용사"));
+        const theirs=heroListings().filter(L=>L.seller===no);
+        main.appendChild(el("div",{class:"rsub",style:"margin:4px 0"},theirs.length?"이 친구가 장터에 올린 물건":"이 친구는 장터에 올린 물건이 없어요"));
+        main.appendChild(marketList(theirs));
+        const back=el("button",{class:"btn sun",style:"align-self:flex-start"},"내 용사로 가기"); back.addEventListener("click",()=>{ close(); openHero(me); }); main.appendChild(back);
+        return;
+      }
+      const seg=el("div",{class:"tabs",role:"tablist",style:"margin:0"});
+      [["closet","꾸미기"],["shop","상점"],["market","친구 장터 "+heroListings().length]].forEach(([k,t])=>{ const b=el("button",{role:"tab","aria-selected":String(mode===k)},t); b.addEventListener("click",()=>{ mode=k; ask=null; if(k==="shop"&&!HERO_SHOP_TABS.includes(cat)) cat="weapon"; draw(); }); seg.appendChild(b); });
+      main.appendChild(seg);
+      if(mode==="market"){ main.appendChild(marketList(heroListings())); main.appendChild(el("p",{class:"note",style:"margin:0"},"꾸미기에서 내가 산 아이템을 누르면 장터에 올릴 수 있어요. 값은 상점 값보다 비쌀 수 없어요.")); return; }
+      const tabs=mode==="shop"?HERO_SHOP_TABS:HERO_TABS;
+      const ct=el("div",{class:"tabs",style:"margin:0"});
+      tabs.forEach(c=>{ const nm=HERO.CATS.find(x=>x.id===c).name; const b=el("button",{"aria-selected":String(cat===c)},nm); b.addEventListener("click",()=>{ cat=c; ask=null; draw(); }); ct.appendChild(b); });
+      main.appendChild(ct);
+      const grid=el("div",{class:"hs-grid"}); main.appendChild(grid);
+      const optional=HERO.CATS.find(x=>x.id===cat).optional;
+      if(mode==="closet"){
+        if(optional){ const b=el("button",{class:"hi rar0"+(look[cat]?"":" on"),type:"button"}); b.append(itemCanvas(null),el("small",null,"벗기")); b.addEventListener("click",()=>{ const lk=Object.assign({},look); delete lk[cat]; saveLook(no,lk); ask=null; }); grid.appendChild(b); }
+        HERO.ITEMS.filter(it=>it.cat===cat&&HERO.owns(st,no,it.id)).forEach(it=>{
+          const L=HERO.listingOf(st,no,it.id);
+          const b=el("button",{class:"hi rar"+it.tier+(look[cat]===it.id?" on":""),type:"button",title:it.name+" · "+HERO.RARITY[it.tier]});
+          b.append(itemCanvas(it,look.body),el("small",null,it.name)); if(L) b.appendChild(el("span",{class:"tag"},"장터"));
+          b.addEventListener("click",()=>{ const lk=Object.assign({},look); if(look[cat]===it.id&&optional) delete lk[cat]; else lk[cat]=it.id; ask=it.tier?{t:"sell",id:it.id}:null; saveLook(no,lk); });
+          grid.appendChild(b); });
+        if(!HERO.ITEMS.some(it=>it.cat===cat&&HERO.owns(st,no,it.id))) grid.appendChild(el("p",{class:"note",style:"grid-column:1/-1"},"아직 없어요. 상점에서 사 보세요!"));
+      } else {
+        HERO.ITEMS.filter(it=>it.cat===cat&&it.tier&&!HERO.owns(st,no,it.id)).sort((a,b)=>a.tier-b.tier).forEach(it=>{
+          const p=HERO.priceOf(it,pr);
+          const b=el("button",{class:"hi rar"+it.tier+(p>money?" poor":"")+(ask&&ask.id===it.id?" on":""),type:"button",title:it.name+" · "+HERO.RARITY[it.tier]+" · "+p+"코인"});
+          b.append(itemCanvas(it,look.body),el("small",null,it.name),coinEl(p));
+          b.addEventListener("click",()=>{ ask={t:"buy",id:it.id}; draw(); });
+          grid.appendChild(b); });
+      }
+      /* 아래: 살까요? / 팔까요? */
+      if(ask){ const it=HERO.byId(ask.id), bar=el("div",{class:"hs-ask"}); bar.appendChild(itemCanvas(it,look.body));
+        const info=el("div",{style:"flex:1;min-width:10em"}); info.append(el("b",null,it.name),el("div",{class:"note",style:"margin:0"},HERO.RARITY[it.tier]+" · 상점 값 "+HERO.priceOf(it,pr)+"코인")); bar.appendChild(info);
+        if(ask.t==="buy"){ const why=HERO.whyNotBuy(st,no,it.id,tempOf(no),pr);
+          const b=el("button",{class:"btn pri"},why||HERO.priceOf(it,pr)+"코인으로 사기"); if(why) b.disabled=true;
+          b.addEventListener("click",async()=>{ b.disabled=true; if(await heroBuy(no,it.id)){ ask=null; mode="closet"; cat=it.cat; } draw(); }); bar.appendChild(b); }
+        else { const L=HERO.listingOf(st,no,it.id);
+          if(L){ bar.appendChild(el("span",{class:"note",style:"margin:0"},"장터에 "+L.price+"코인에 올려 두었어요")); const b=el("button",{class:"btn"},"장터에서 내리기"); b.addEventListener("click",()=>heroCancel(no,L.key)); bar.appendChild(b); }
+          else { const cap=HERO.priceOf(it,pr); const ip=el("input",{type:"number",min:"1",max:String(cap),style:"width:5.5em"}); ip.value=String(Math.max(1,Math.floor(cap/2)));
+            const b=el("button",{class:"btn sun"},"장터에 올리기"); b.addEventListener("click",async()=>{ b.disabled=true; if(await heroSell(no,it.id,ip.value)) ask={t:"sell",id:it.id}; draw(); });
+            bar.append(el("span",{class:"note",style:"margin:0"},"팔 값"),ip,el("span",{class:"note",style:"margin:0"},"코인"),b); } }
+        main.appendChild(bar); }
+    };
+    /* 장터 목록: 사는 사람은 이 창의 주인(학생은 나) */
+    function marketList(list){
+      const box=el("div",{class:"mk"});
+      list.forEach(L=>{ const it=HERO.byId(L.item), row=el("div",{class:"m"});
+        row.append(itemCanvas(it,lookOf(actor).body));
+        const t=el("div",{style:"min-width:0"}); t.append(el("b",null,it.name),el("div",{class:"w"},HERO.RARITY[it.tier]+" · "+who(L.seller)+" · 상점 값 "+HERO.priceOf(it,heroPrices())));
+        row.append(t,coinEl(L.price));
+        if(L.seller===actor){ const b=el("button",{class:"btn"},"내리기"); b.addEventListener("click",()=>heroCancel(actor,L.key)); row.appendChild(b); }
+        else { const why=HERO.whyNotTrade(hst(),actor,L.key,tempOf(actor)); const b=el("button",{class:"btn pri"},why||"사기"); if(why) b.disabled=true;
+          b.addEventListener("click",async()=>{ b.disabled=true; await heroTrade(actor,L.key); }); row.appendChild(b); }
+        box.appendChild(row); });
+      if(!list.length) box.appendChild(el("p",{class:"note",style:"margin:0"},"장터가 비어 있어요."));
+      return box;
+    }
+    heroRedraw=draw; draw();
+  },{cls:"hsheet"});
+}
+/* 보상판 오른쪽 아래: 친구 장터 미리 보기 */
+function renderMarketBoard(){
+  const box=$("market"), head=$("mkHead"); if(!box||!head) return;
+  const on=heroOn(); box.hidden=!on; head.hidden=!on; if(!on) return;
+  box.innerHTML=""; const list=heroListings();
+  list.slice(0,8).forEach(L=>{ const it=HERO.byId(L.item); const r=el("button",{class:"m",type:"button",title:STUDENT?"눌러서 사러 가기":"눌러서 판 친구 보기"});
+    r.append(itemCanvas(it,lookOf(L.seller).body),el("span",{class:"who"},it.name+" · "+L.seller+"번"),coinEl(L.price));
+    r.addEventListener("click",()=>{ if(STUDENT) openHero(+lsGet("hd-me")||0,"market"); else openHero(L.seller); }); box.appendChild(r); });
+  if(!list.length) box.appendChild(el("p",{class:"note",style:"margin:0"},"아직 올라온 물건이 없어요."));
+  $("mkNote").textContent=list.length?list.length+"개":"";
+}
+/* 전담 수업(체육·영어 …)은 온도를 더 많이 올려요 */
+function lessonPts(p){ const r=RW(); const list=String(r.spSubj||"").split(/[,\s·]+/).filter(Boolean).map(subjOf);
+  return p&&list.includes(subjOf(p.s||""))?Math.max(1,Math.floor(+r.spPts||5)):1; }
+const HERO_RULES='"shop": {\n  ".read": "auth != null",\n  "log": { "$e": { ".write": "auth != null && !data.exists()" } },\n  "looks": { "$s": { ".write": "auth != null" } }\n},';
 function pickMe(){
   const had=+lsGet("hd-me")||0;
   overlay((sh,close)=>{
@@ -2342,6 +2609,8 @@ function renderMe(){
   const go=el("button",{class:"mini"},"보상판 보기"); go.addEventListener("click",()=>setMode("reward"));
   row.append(el("span",{class:"no"},me+"번 "+nameOf(me)),el("span",{class:"t"},t+"도"),go,bar,el("span",{class:"left"},"다음 "+cfg.prize+"까지 "+left+"도"));
   body.appendChild(row);
+  if(heroOn()){ const hr=el("div",{class:"me-hero"}); hr.append(heroCanvas(lookOf(me)),coinEl(Math.max(0,coinsOf(me))));
+    const hb=el("button",{class:"btn sun"},"내 용사 꾸미기 · 상점"); hb.addEventListener("click",()=>openHero(me)); hr.appendChild(hb); body.appendChild(hr); }
   const ab=angelBanner(); if(ab) body.appendChild(ab);
 }
 /* ---------- 선생님 부르기: 해님 도우미 & 받은 메시지 ---------- */
