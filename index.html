@@ -1667,17 +1667,18 @@ function checkBell(now){
 function renderBellBtn(){ const b=$("btnBell"); const on=bellOn(); b.setAttribute("aria-pressed",String(on)); b.title=on?"종소리 켜짐 (누르면 꺼요)":"종소리 꺼짐 (누르면 켜요)"; b.classList.toggle("off",!on); }
 let unlocked=false;
 function unlock(){ if(unlocked) return; unlocked=true; audio(); $("unlock").hidden=true; wake(); if(missionPending){ missionPending=false; chime(); } }
-/* 아침 미션 알림: 미션 날 8시 10분이 되면(그 뒤에 켜면 켜자마자) 기기마다 하루 한 번 울려요.
+/* 아침 미션 알림: 미션 날 8시 30분이 되면(그 뒤에 켜면 켜자마자) 기기마다 하루 한 번 울려요.
    브라우저가 소리를 막아 두었으면 화면을 처음 누를 때 소리가 나요 */
 let missionPending=false;
 function checkMission(now){
   const m=missionFor(ymd(now)); if(!m || !isSchoolDay(now)) return;
-  const t=now.getHours()*60+now.getMinutes(); if(t<8*60+10 || t>=12*60) return;
+  const t=now.getHours()*60+now.getMinutes(); if(t<8*60+30 || t>=12*60) return;
   const k="hd-mission-"+m.date; if(lsGet(k)) return; lsSet(k,1);
   showMissionAlert(m);
 }
 function showMissionAlert(m){
-  if(AC && AC.state==="running") chime(); else missionPending=true;
+  const n=new Date(), hm=pad2(n.getHours())+":"+pad2(n.getMinutes()), bellNow=!STUDENT && bellOn() && hm===S.morning.start;
+  if(AC && AC.state==="running"){ if(bellNow) setTimeout(chime,6500); else chime(); } else missionPending=true;
   const c=overlay((sh,close)=>{
     sh.classList.add("alarm","mission-alert","ring");
     sh.appendChild(el("div",{class:"when"},"아침 미션 "+m.day+"일차"));
